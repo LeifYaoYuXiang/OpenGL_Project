@@ -53,7 +53,12 @@ public class Human {
 		 GL11.glPushMatrix();{
 			 
 			 //pelvis
+			 /*
+			  * this function is used to implement the self-rotation
+			  * theory behind it: each draw one human being you rotate along y-axis "thetaDeg" degree
+			  * */
 			 GL11.glRotatef(thetaDeg,0.0f,1.0f, 0.0f);
+			 
 			 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y 
 			 sphere.DrawSphere(0.5f, 32, 32); //draw the sphere standing for the pelvis
 			 
@@ -214,19 +219,21 @@ public class Human {
 		         GL11.glPopMatrix();//pop matrix --> back to pelvis
 		         
 		         // left hip
+		         //configure the pen (color & material)
 		       	 GL11.glColor3f(blue[0], blue[1], blue[2]);
 		       	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       	 GL11.glPushMatrix(); 
 		       	 {
-		       		 GL11.glTranslatef(-0.5f,-0.2f,0.0f);
-		       		 sphere.DrawSphere(0.25f, 32, 32); 
+		       		 GL11.glTranslatef(-0.5f,-0.2f,0.0f);//translate the coordinate system along (-0.5f,0.2f)
+		       		 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for hip 
 		       		 
-		       		 // left high leg
+		       		 //left high leg
+		       		 //configure the pen (color & material)
 		           	 GL11.glColor3f(orange[0], orange[1], orange[2]);
 		           	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
 		           	 GL11.glPushMatrix(); 
 		           	 {
-		                    GL11.glTranslatef(0.0f,0.0f,0.0f);
+		                    GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
 		                    GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);
 		                    
 		                    GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); 
