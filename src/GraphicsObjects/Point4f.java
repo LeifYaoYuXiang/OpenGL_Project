@@ -24,6 +24,10 @@ public class Point4f {
 		this.a = a;
 	}
 	
+	/*
+	* Goal:
+	* 	According to the input parameter determine the return value of X,Y,Z,a positions
+	* */
 	public float getPostion(int postion)
 	{
 		switch(postion)
@@ -41,16 +45,26 @@ public class Point4f {
 		return ("(" + x +"," + y +"," + z + "," + a +")");
     }
  
-	 //implement Point plus a Vector 
+	/*
+	* Goal:
+	* 	add Additonal(an vector) to this point and get a new point
+	* Mechanism:
+	* 	add the x,y,z,a position respectively
+	* */ 
 	public Point4f PlusVector(Vector4f Additonal) { 
 		this.x=this.x+Additonal.x;
 	 	this.y=this.y+Additonal.y;
 	 	this.z=this.z+Additonal.z;
 	 	this.a=this.a+Additonal.a;
 	 	return this;
-		//return new Point4f( );
 	} 
 	
+	/*
+	* Goal:
+	* 	use this point to minus the Minus(a vector) to get a new point
+	* Mechanism:
+	* 	minus x,y,z,a position respectively
+	* */
 	public Point4f MinusVector(Vector4f Minus) { 
 		this.x=this.x-Minus.x;
 		 this.y=this.y-Minus.y;
@@ -59,7 +73,12 @@ public class Point4f {
 		 return this;
 	}
 	
-	
+	/*
+	* Goal:
+	* 	use this point to minus anther one to get a new vector
+	* Mechanism:
+	* 	minus x,y,z,a position respectively
+	* */
 	public Vector4f MinusPoint(Point4f Minus) { 
 		return new Vector4f(this.x-Minus.x,this.y-Minus.y,this.z-Minus.z,this.a-Minus.a) ;
 	}

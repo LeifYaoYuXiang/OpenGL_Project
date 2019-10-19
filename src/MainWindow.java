@@ -86,7 +86,6 @@ public class MainWindow {
 	static float pink[] = { 1.0f, 0.6f, 0.6f, 1.0f, 1.0f };
 
 	// static GLfloat light_position[] = {0.0, 100.0, 100.0, 0.0};
-
 	//support method to aid in converting a java float array into a Floatbuffer which is faster for the opengl layer to process 
 	
 
@@ -421,8 +420,8 @@ public class MainWindow {
 		{
 			//Globe in the centre of the scene 
 			GL11.glPushMatrix();
-			 TexSphere MyGlobe = new TexSphere();
-			//TexCube MyGlobe = new TexCube();
+			//TexSphere MyGlobe = new TexSphere();
+			TexCube MyGlobe = new TexCube();
 			GL11.glTranslatef(500, 500,500 ); 
 			GL11.glScalef(140f, 140f,  140f);
 			 
@@ -434,8 +433,9 @@ public class MainWindow {
 			    GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);
 		        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);   
 	  
-		 	MyGlobe.DrawTexSphere(8f, 100, 100, texture); 
-		//	MyGlobe.DrawTexCube(); 
+		 	
+		        //MyGlobe.DrawTexSphere(8f, 100, 100, texture); 
+				MyGlobe.DrawTexCube(texture); 
 			GL11.glPopMatrix();
 		}
 		
