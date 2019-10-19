@@ -224,7 +224,7 @@ public class Human {
 		       	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       	 GL11.glPushMatrix(); 
 		       	 {
-		       		 GL11.glTranslatef(-0.5f,-0.2f,0.0f);//translate the coordinate system along (-0.5f,0.2f)
+		       		 GL11.glTranslatef(-0.5f,-0.2f,0.0f);//translate the coordinate system along (-0.5f,-0.2f)
 		       		 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for hip 
 		       		 
 		       		 //left high leg
@@ -234,103 +234,119 @@ public class Human {
 		           	 GL11.glPushMatrix(); 
 		           	 {
 		                    GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
-		                    GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);
+		                    GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the cylinder 
 		                    
-		                    GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); 
-		                    cylinder.DrawCylinder(0.15f,0.7f,32);
+		                    GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the cylinder to simulate the action of running legs
+		                    cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for high legs
 
 		                    // left knee
+		                    //configure the pen (color & material)
 		                    GL11.glColor3f(blue[0], blue[1], blue[2]);
 		                    GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		                    GL11.glPushMatrix(); 
 		                    {
-		                    	GL11.glTranslatef(0.0f,0.0f,0.75f);
-		                        GL11.glRotatef(0.0f,0.0f,0.0f,0.0f); 
-		                        sphere.DrawSphere(0.25f, 32, 32); 
+		                    	GL11.glTranslatef(0.0f,0.0f,0.75f);//translate the coordinate along (0.75z)
+		                        GL11.glRotatef(0.0f,0.0f,0.0f,0.0f); //doesn't rotate the coordinate system
+		                        sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for the knee
 
 		                        //left low leg
+		                        //configure the pen (color & material)
 		                   	 	GL11.glColor3f(orange[0], orange[1], orange[2]);
 		                   	 	GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
 		                        GL11.glPushMatrix(); 
 		                        {
 		                        	if(LimbRotation>0) {
-			       						 GL11.glRotatef((-LimbRotation),1.0f,0.0f,0.0f);
+		                        		//if the left low leg is behind the body, then we need to rotate it up
+			       						GL11.glRotatef((-LimbRotation),1.0f,0.0f,0.0f);
 			       					 }
-		                        	GL11.glTranslatef(0.0f,0.0f,0.0f);
-		                            //GL11.glRotatef(LimbRotation-90,1.0f,0.0f,0.0f);
-		                            cylinder.DrawCylinder(0.15f,0.7f,32);
+		                        	GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the cylinder
+		                            cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for left low leg
 
-		                            // left foot
+		                            //left foot
+		                            //configure the pen (color & material)
 		                       	 	GL11.glColor3f(blue[0], blue[1], blue[2]);
 		                       	 	GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		                            GL11.glPushMatrix(); 
 		                            {
-		                                GL11.glTranslatef(0.0f,0.0f,0.75f);
-		                                sphere.DrawSphere(0.3f, 32, 32);  
+		                                GL11.glTranslatef(0.0f,0.0f,0.75f);//translate the coordinate system (0.75z)
+		                                sphere.DrawSphere(0.3f, 32, 32);  //draw the sphere standing for the left foot
 		                            } 
-		                            GL11.glPopMatrix();
+		                            GL11.glPopMatrix();//pop matrix --> back to low leg
 		                        } 
-		                        GL11.glPopMatrix();
+		                        GL11.glPopMatrix();//pop matrix --> back to knee
 		                    } 
-		                    GL11.glPopMatrix();
+		                    GL11.glPopMatrix();//pop matrix --> back to high leg
 		           	 } 
-		           	 GL11.glPopMatrix();
+		           	 GL11.glPopMatrix();//pop matrix --> back to left hip
 		       	 } 
-		       	 GL11.glPopMatrix();
-		       	 // pelvis
-		       	 // right hip
+		       	 GL11.glPopMatrix();//pop matrix --> back to pelvis
+		       	 
+		       	 //right hip
+		       	 //configure the pen (color & material)
 		       	 GL11.glColor3f(blue[0], blue[1], blue[2]);
 		       	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       	 GL11.glPushMatrix(); 
 		       	 {
-		       		 GL11.glTranslatef(0.5f,-0.2f,0.0f);
-		       		 sphere.DrawSphere(0.25f, 32, 32);
+		       		 
+		       		 GL11.glTranslatef(0.5f,-0.2f,0.0f);//translate the coordinate along (0.5,-0.2,0.0)
+		       		 sphere.DrawSphere(0.25f, 32, 32);//draw the sphere standing for the right hip
+		       		 
+		       		 //right high leg
+		       		 //configure the pen (color & material)
 		       		 GL11.glColor3f(orange[0], orange[1], orange[2]);
 		       		 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
 		       		 GL11.glPushMatrix(); 
 		       		 {
-		       			 GL11.glTranslatef(0.0f,0.0f,0.0f);
-		       			 GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);
-		       			 GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); 
-		       			 cylinder.DrawCylinder(0.15f,0.7f,32);
-				                    
+		       			 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
+		       			 GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the coordinate system
+		       			 GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the coordinate system (LimbRotation+90) degree along (1.0,0.0,0.0) w
+		       			 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for right high pen 
+				         
+		       			 //right knee
+		       			 //configure the pen (color & material)
 		       			 GL11.glColor3f(blue[0], blue[1], blue[2]);
 		       			 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       			 GL11.glPushMatrix(); 
 		       			 {
-		       				 GL11.glTranslatef(0.0f,0.0f,0.75f);
+		       				 GL11.glTranslatef(0.0f,0.0f,0.75f);//translate the coordinate (0.75z)
 		       				 GL11.glRotatef(0.0f,0.0f,0.0f,0.0f); 
-		       				 sphere.DrawSphere(0.25f, 32, 32); 
+		       				 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for knee
 		       				 
+		       				 //right low leg
+		       				 //configure the pen (color & material)
 		       				 GL11.glColor3f(orange[0], orange[1], orange[2]);
 		       				 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
 		       				 GL11.glPushMatrix(); 
 		       				 {
-		       					 GL11.glTranslatef(0.0f,0.0f,0.0f);
+		       					 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't rotate the coordinate system
 		       					 if(LimbRotation<0) {
-		       						 GL11.glRotatef((LimbRotation),1.0f,0.0f,0.0f);
+		       						 //if the right leg is behind the body
+		       						 GL11.glRotatef((LimbRotation),1.0f,0.0f,0.0f);//rotate the right leg up
 		       					 }
-		       					 cylinder.DrawCylinder(0.15f,0.7f,32);
+		       					 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for leg
 		       					 
+		       					 //right foot
+		       					 //configure the pen (color & material)
 		       					 GL11.glColor3f(blue[0], blue[1], blue[2]);
 		       					 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       					 GL11.glPushMatrix(); 
 		       					 {
-		       						 GL11.glTranslatef(0.0f,0.0f,0.75f);
-		       						 sphere.DrawSphere(0.3f, 32, 32); 
+		       						 GL11.glTranslatef(0.0f,0.0f,0.75f);//translate the coordinate (0.75z)
+		       						 sphere.DrawSphere(0.3f, 32, 32); //draw the sphere standing for the foot 
 		       					 }
-		       					 GL11.glPopMatrix();
+		       					 GL11.glPopMatrix();//pop matrix --> back to low leg
 		       				 }
-		       				 GL11.glPopMatrix();
+		       				 GL11.glPopMatrix();//pop matrix --> back to knee
 		       			 }
-		       			 GL11.glPopMatrix();
+		       			 GL11.glPopMatrix();//pop matrix --> back to high leg 
 		       		 }
-		       		 GL11.glPopMatrix();
+		       		 GL11.glPopMatrix();//pop matrix --> back to hip 
 		       	 }
-		       	 GL11.glPopMatrix();
+		       	 GL11.glPopMatrix();//pop matrix --> back to pelvis 
 			 } 
-			 GL11.glPopMatrix();
+			 GL11.glPopMatrix();//pop matrix --> empty stack !
 		 } 
+		 //finish drawing human being
 
 		
 	}
