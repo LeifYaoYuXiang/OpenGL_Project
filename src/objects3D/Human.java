@@ -1,5 +1,7 @@
 package objects3D;
 
+import java.io.IOException;
+
 import org.lwjgl.opengl.GL11;
 import GraphicsObjects.Point4f;
 import GraphicsObjects.Utils;
@@ -60,7 +62,11 @@ public class Human {
 			 GL11.glRotatef(thetaDeg,0.0f,1.0f, 0.0f);
 			 
 			 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y 
-			 sphere.DrawSphere(0.5f, 32, 32); //draw the sphere standing for the pelvis
+			 try {
+				sphere.DrawTexSphere(0.5f, 32, 32);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} //draw the sphere standing for the pelvis
 			 
 			 
 			 //chest

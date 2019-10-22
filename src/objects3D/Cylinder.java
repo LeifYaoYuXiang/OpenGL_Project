@@ -84,14 +84,12 @@ public class Cylinder {
 			Vector4f normal3=v5.cross(v6).Normal();
 			GL11.glNormal3f(normal3.x,normal3.y,normal3.z);
 
-
-
-
-
 			GL11.glVertex3f(first_point.x,first_point.y,first_point.z);
 			GL11.glVertex3f(second_point.x,second_point.y,second_point.z);
 			GL11.glVertex3f(third_point.x,third_point.y,third_point.z);
 		}
 		GL11.glEnd();
 	}
+	
+	
 }
