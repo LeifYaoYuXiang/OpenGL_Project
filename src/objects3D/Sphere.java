@@ -83,6 +83,7 @@ public class Sphere {
 		GL11.glColor3f(1.0f, 1.0f, 1.0f); 
 		TexSphere texSphere=new TexSphere();
 		texSphere.DrawTexSphere(radius, nSlices, nSegments, texture);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
 }
 
