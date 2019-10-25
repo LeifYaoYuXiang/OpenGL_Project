@@ -37,7 +37,7 @@ public class Human {
 	
 	public void DrawHuman(float delta,boolean GoodAnimation){ 
 		//the angle used in the the method glRotatef()
-		float theta = (float) (delta * 50 * Math.PI);
+		float theta = (float) (delta * 25 * Math.PI);
 		float LimbRotation;
 		float thetaDeg = delta * 360; 
 		 if (GoodAnimation){
@@ -59,11 +59,15 @@ public class Human {
 			  * this function is used to implement the self-rotation
 			  * theory behind it: each draw one human being you rotate along y-axis "thetaDeg" degree
 			  * */
-			 GL11.glRotatef(thetaDeg,0.0f,1.0f, 0.0f);
+			 GL11.glRotatef(-thetaDeg+180,0.0f,1.0f, 0.0f);
+			 
 			 
 			 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y 
 			 try {
-				sphere.DrawTexSphere(0.5f, 32, 32);
+				GL11.glRotatef(90, 1, 0, 0);
+				sphere.DrawTexSphere(0.5f, 16, 16,"PNG","res/underwear.png");
+				GL11.glRotatef(-90, 1, 0, 0);
+				 
 			} catch (IOException e) {
 				e.printStackTrace();
 			} //draw the sphere standing for the pelvis
@@ -75,8 +79,17 @@ public class Human {
 			 GL11.glMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(green));
 			 GL11.glPushMatrix(); 
 			 {
-				 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y 
-				 sphere.DrawSphere(0.5f, 32, 32); //draw the sphere standing for the chest
+				 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y
+				 
+				 try {
+						GL11.glRotatef(90, 1, 0, 0);
+						sphere.DrawTexSphere(0.5f, 32, 32,"PNG","res/body.png");
+						GL11.glRotatef(-90, 1, 0, 0);
+						 
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				 //sphere.DrawSphere(0.5f, 32, 32); //draw the sphere standing for the chest
 				 
 				 // neck
 				 //configure the pen (color & material)
@@ -91,12 +104,22 @@ public class Human {
 		        	 
 		        	 // head
 		        	 //configure the pen (color & material)
-		           	 GL11.glColor3f(red[0], red[1], red[2]);
+		           	 GL11.glColor3f(red[0], red[1], red[2]);	
 		             GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(red));
 		             GL11.glPushMatrix(); 
 		             {
+		            	 
 		            	 GL11.glTranslatef(0.0f,0.0f,1.0f);//translate the coordinate +1z
-		            	 sphere.DrawSphere(0.5f, 32, 32);//draw the sphere standing for the head
+//		            	 sphere.DrawSphere(0.5f, 32, 32);//draw the sphere standing for the head
+		            	 try {
+		            		 GL11.glRotatef(60, 0.0f, 0.0f, 1.0f);
+							sphere.DrawTexSphere(0.5f, 32, 32, "PNG", "res/Mona.png");
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+		            	 
+		            	 
 		            	 GL11.glPopMatrix();//pop matrix -->back to neck
 		             } 
 		             GL11.glPopMatrix();//pop matrix -->back to chest
@@ -120,8 +143,11 @@ public class Human {
 		            		 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate
 		            		 GL11.glRotatef(90.0f,1.0f,0.0f,0.0f);//rotate the coordinate 90 degree along (1,0,0)
 		                     GL11.glRotatef(LimbRotation,1.0f,0.0f,0.0f);//rotate the coordinate "LimbRotation" degree along (1,0,0)
-		                     cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for the left arm
-
+		                     if(LimbRotation>0) {
+		                    	 GL11.glRotatef(-LimbRotation, 0, 0, 1);
+		                     }
+		                     cylinder.DrawCylinder(0.15f,0.75f,32);//draw the cylinder standing for the left arm
+		                     
 
 		                     // left elbow
 		                     //configure the pen (color & material)
@@ -130,6 +156,7 @@ public class Human {
 		                   	 GL11.glPushMatrix(); 
 		                   	 {
 		                   		 GL11.glTranslatef(0.0f,0.0f,0.75f);//translate the coordinate (+0.75z)
+		                   		 
 		                   		 sphere.DrawSphere(0.2f, 32, 32); //draw the sphere standing for the left elbow
 		                   		 
 		                   		 //left forearm
@@ -140,7 +167,8 @@ public class Human {
 		                       	 GL11.glPushMatrix(); 
 		                       	 {
 		                       		 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
-		                       		 GL11.glRotatef(90.0f,1.0f,0.0f,0.0f);//rotate the system 90 degree along (1,0,0) 
+		                       		 GL11.glRotatef(90.0f,1.0f,0.0f,0.0f);//rotate the system 90 degree along (1,0,0)
+		                       		 
 		                       		 cylinder.DrawCylinder(0.1f,0.7f,32);//drawing the cylinder standing for the left forearm
 		                       		 
 		                       		 // left hand
@@ -172,7 +200,7 @@ public class Human {
 		            	 GL11.glTranslatef(-0.5f,0.4f,0.0f);//translate the matrix along(0.5 0.4 0.0)
 		            	 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for shoulder
 		            	 
-		            	 // right arm
+		            	 // right arm```````````````
 		            	 //configure the pen (color & material)
 		            	 GL11.glColor3f(orange[0], orange[1], orange[2]);
 		            	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
@@ -181,6 +209,9 @@ public class Human {
 		            		 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system  
 		            		 GL11.glRotatef(90.0f,1.0f,0.0f,0.0f);//rotate the coordinate system 90 degree along (1,0,0)
 		            		 GL11.glRotatef(-LimbRotation,1.0f,0.0f,0.0f); //rotate the coordinate system 90 degree along (1,0,0)
+		            		 if(LimbRotation<0) {
+		                    	 GL11.glRotatef(-LimbRotation, 0, 0, 1);
+		                     }
 		            		 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for the right arm
 		            		 
 		            		 // right elbow
@@ -230,7 +261,7 @@ public class Human {
 		       	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(blue));
 		       	 GL11.glPushMatrix(); 
 		       	 {
-		       		 GL11.glTranslatef(-0.5f,-0.2f,0.0f);//translate the coordinate system along (-0.5f,-0.2f)
+		       		 GL11.glTranslatef(-0.5f,-0.5f,0.0f);//translate the coordinate system along (-0.5f,-0.2f)
 		       		 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for hip 
 		       		 
 		       		 //left high leg
@@ -294,7 +325,7 @@ public class Human {
 		       	 GL11.glPushMatrix(); 
 		       	 {
 		       		 
-		       		 GL11.glTranslatef(0.5f,-0.2f,0.0f);//translate the coordinate along (0.5,-0.2,0.0)
+		       		 GL11.glTranslatef(0.5f,-0.5f,0.0f);//translate the coordinate along (0.5,-0.2,0.0)
 		       		 sphere.DrawSphere(0.25f, 32, 32);//draw the sphere standing for the right hip
 		       		 
 		       		 //right high leg

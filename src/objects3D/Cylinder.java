@@ -1,6 +1,11 @@
 package objects3D;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
+
 import GraphicsObjects.Point4f;
 import GraphicsObjects.Vector4f;
 import java.math.*;
@@ -90,6 +95,71 @@ public class Cylinder {
 		}
 		GL11.glEnd();
 	}
+	
+	
+	public void drawTextCylinder(float radius, float height, int nSegments,String type,String url ) throws Exception{
+		Texture texture = (Texture) TextureLoader.getTexture(type, ResourceLoader.getResourceAsStream(url));
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL11.GL_CLAMP);
+		Color.white.bind();
+		texture.bind();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);
+		
+		float x,y,z;
+		float t,s;
+		
+		float inctheta = (float) ((2.0f*Math.PI )/nSegments);
+		
+		GL11.glBegin(GL11.GL_QUADS);{
+			for(float theta=(float) -Math.PI; theta<Math.PI; theta+=inctheta){
+				
+				x=(float) (Math.cos(theta)*radius);
+	            y=(float) (Math.sin(theta)*radius);
+	            z=height;
+	            t=1; 
+	            s=(float) (theta/Math.PI*2.0f); 
+	            GL11.glNormal3f(x,y,z); 
+	            GL11.glVertex3f(x,y,z);  
+	            
+	            x=(float) (Math.cos(theta+inctheta)*radius);
+	            y=(float) (Math.sin(theta+inctheta)*radius);
+	            z=0;
+	            t=0; 
+	            s=(float) ((theta+inctheta)/Math.PI*2.0f);
+	            GL11.glTexCoord2f(s,t);
+	            GL11.glNormal3f(x,y,z);
+	            GL11.glVertex3f(x,y,z);  
+	             
+	           
+		           
+	            x=(float) (Math.cos(theta)*radius);
+	            y=(float) (Math.sin(theta)*radius);
+	            z=0;
+	            t=0; 
+	            s=(float) (theta/Math.PI*2.0f);
+	           
+	            GL11.glTexCoord2f(s,t); 
+	            GL11.glNormal3f(x,y,z);  
+	            GL11.glVertex3f(x,y,z);
+
+	            
+	            x=(float) (Math.cos(theta+inctheta)*radius);
+	            y=(float) (Math.sin(theta+inctheta)*radius);
+	            z=height;
+	            t=1; 
+	            s=(float) ((theta+inctheta)/Math.PI*2.0f);
+	         
+	            GL11.glTexCoord2f(s,t);
+	            GL11.glNormal3f(x,y,z);
+	            GL11.glVertex3f(x,y,z); 
+
+	            	
+			}
+			
+		}
+		GL11.glEnd();
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+	}	
 	
 	
 }

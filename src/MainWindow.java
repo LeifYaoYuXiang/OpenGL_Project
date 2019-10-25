@@ -340,23 +340,14 @@ public class MainWindow {
 	 
 
 	public void changeOrth() {
-
-		 GL11.glMatrixMode(GL11.GL_PROJECTION);
-		 GL11.glLoadIdentity();
-		  GL11.glOrtho(1200 -  OrthoNumber , OrthoNumber, (800 - (OrthoNumber  * 0.66f)) , (OrthoNumber * 0.66f), 100000, -100000);
-		 	GL11.glMatrixMode(GL11.GL_MODELVIEW); 
-		 	
-		 	FloatBuffer CurrentMatrix = BufferUtils.createFloatBuffer(16); 
-		 	GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, CurrentMatrix);
-		 
-		 //	if(MouseOnepressed)
-		 //	{
-		  
-		 	MyArcball.getMatrix(CurrentMatrix); 
-		 //	}
-		 	
-		    GL11.glLoadMatrix(CurrentMatrix);
-		 	
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(1200 -  OrthoNumber , OrthoNumber, (800 - (OrthoNumber  * 0.66f)) , (OrthoNumber * 0.66f), 100000, -100000);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW); 
+		FloatBuffer CurrentMatrix = BufferUtils.createFloatBuffer(16); 
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, CurrentMatrix);
+		MyArcball.getMatrix(CurrentMatrix); 
+		GL11.glLoadMatrix(CurrentMatrix);
 	}
 
 	/*
@@ -370,14 +361,14 @@ public class MainWindow {
 		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		GL11.glColor3f(0.5f, 0.5f, 1.0f); 
 		 
-		 myDelta =   getTime() - StartTime; 
-		  float delta =((float) myDelta)/10000; 
+		myDelta =   getTime() - StartTime; 
+		float delta =((float) myDelta)/10000; 
 		   
 		  // code to aid in animation 
-		 float theta = (float) (delta * 2 * Math.PI);
-		 float thetaDeg = delta * 360; 
-		  float posn_x = (float) Math.cos(theta); // same as your circle code in your notes 
-		  float posn_y  = (float) Math.sin(theta);
+		float theta = (float) (delta * 2 * Math.PI);
+		float thetaDeg = delta * 360; 
+		float posn_x = (float) Math.cos(theta); // same as your circle code in your notes 
+		float posn_y  = (float) Math.sin(theta); 
 		  
 		  /*
 		   * This code draws a grid to help you view the human models movement 
@@ -410,20 +401,20 @@ public class MainWindow {
 		}
 		 
 		MyHuman.DrawHuman(delta,BadAnimation); // give a delta for the Human object ot be animated 
-		 
 		GL11.glPopMatrix();
+	
 		
 		/*
 		 * This code puts the earth code in which is larger than the human so it appears to change the scene 
 		 */
-		if(Earth)
+		if(true)
 		{
 			//Globe in the centre of the scene 
 			GL11.glPushMatrix();
 			//TexSphere MyGlobe = new TexSphere();
 			TexCube MyGlobe = new TexCube();
-			GL11.glTranslatef(500, 500,500 ); 
-			GL11.glScalef(140f, 140f,  140f);
+			GL11.glTranslatef(500, 500,1000); 
+			GL11.glScalef(1400f, 1400f,  140f);
 			 
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL11.GL_CLAMP);
 		  
