@@ -3,6 +3,8 @@ package objects3D;
 import java.io.IOException;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
+
 import GraphicsObjects.Point4f;
 import GraphicsObjects.Utils;
 import GraphicsObjects.Vector4f;
@@ -35,7 +37,7 @@ public class Human {
 	public Human() {
 	}
 	
-	public void DrawHuman(float delta,boolean GoodAnimation){ 
+	public void DrawHuman(float delta,boolean GoodAnimation, Texture faceTexture, Texture bodyTexture, Texture pelvisTexture ){ 
 		//the angle used in the the method glRotatef()
 		float theta = (float) (delta * 25 * Math.PI);
 		float LimbRotation;
@@ -65,7 +67,7 @@ public class Human {
 			 GL11.glTranslatef(0.0f,0.5f,0.0f);//translate the coordinate to +0.5y 
 			 try {
 				GL11.glRotatef(90, 1, 0, 0);
-				sphere.DrawTexSphere(0.5f, 16, 16,"PNG","res/underwear.png");
+				sphere.DrawTexSphere(0.5f, 16, 16,pelvisTexture);
 				GL11.glRotatef(-90, 1, 0, 0);
 				 
 			} catch (IOException e) {
@@ -83,7 +85,7 @@ public class Human {
 				 
 				 try {
 						GL11.glRotatef(90, 1, 0, 0);
-						sphere.DrawTexSphere(0.5f, 32, 32,"PNG","res/body.png");
+						sphere.DrawTexSphere(0.5f, 32, 32,bodyTexture);
 						GL11.glRotatef(-90, 1, 0, 0);
 						 
 					} catch (IOException e) {
@@ -113,7 +115,7 @@ public class Human {
 //		            	 sphere.DrawSphere(0.5f, 32, 32);//draw the sphere standing for the head
 		            	 try {
 		            		 GL11.glRotatef(60, 0.0f, 0.0f, 1.0f);
-							sphere.DrawTexSphere(0.5f, 32, 32, "PNG", "res/Mona.png");
+							sphere.DrawTexSphere(0.5f, 32, 32, faceTexture);
 						} catch (IOException e2) {
 							// TODO Auto-generated catch block
 							e2.printStackTrace();
@@ -200,7 +202,7 @@ public class Human {
 		            	 GL11.glTranslatef(-0.5f,0.4f,0.0f);//translate the matrix along(0.5 0.4 0.0)
 		            	 sphere.DrawSphere(0.25f, 32, 32); //draw the sphere standing for shoulder
 		            	 
-		            	 // right arm```````````````
+		            	 // right arm
 		            	 //configure the pen (color & material)
 		            	 GL11.glColor3f(orange[0], orange[1], orange[2]);
 		            	 GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));

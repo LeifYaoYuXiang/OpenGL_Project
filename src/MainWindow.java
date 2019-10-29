@@ -84,6 +84,11 @@ public class MainWindow {
 	static float brown[] = { 0.5f, 0.25f, 0.0f, 1.0f, 1.0f };
 	static float dkgreen[] = { 0.0f, 0.5f, 0.0f, 1.0f, 1.0f };
 	static float pink[] = { 1.0f, 0.6f, 0.6f, 1.0f, 1.0f };
+	
+	Texture texture;
+	Texture faceTexture;
+	Texture bodyTexture;
+	Texture pelvisTexture;
 
 	// static GLfloat light_position[] = {0.0, 100.0, 100.0, 0.0};
 	//support method to aid in converting a java float array into a Floatbuffer which is faster for the opengl layer to process 
@@ -392,7 +397,7 @@ public class MainWindow {
 		if(!BadAnimation)
 		{
 			
-			// insert your animation code to correct the postion for the human rotating 
+			// insert your animation code to correct the position for the human rotating 
 			
 		}else
 		{ 
@@ -400,7 +405,7 @@ public class MainWindow {
 			 GL11.glTranslatef(posn_x*3.0f, 0.0f, posn_y*3.0f);
 		}
 		 
-		MyHuman.DrawHuman(delta,BadAnimation); // give a delta for the Human object ot be animated 
+		MyHuman.DrawHuman(delta,BadAnimation,faceTexture,bodyTexture,pelvisTexture); // give a delta for the Human object at be animated 
 		GL11.glPopMatrix();
 	
 		
@@ -413,9 +418,8 @@ public class MainWindow {
 			GL11.glPushMatrix();
 			//TexSphere MyGlobe = new TexSphere();
 			TexCube MyGlobe = new TexCube();
-			GL11.glTranslatef(500, 500,1000); 
-			GL11.glScalef(1400f, 1400f,  140f);
-			 
+			GL11.glTranslatef(300, -70,0); 
+			GL11.glScalef(350f, 350f,  350f);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL11.GL_CLAMP);
 		  
 			 Color.white.bind();
@@ -428,8 +432,7 @@ public class MainWindow {
 		        //MyGlobe.DrawTexSphere(8f, 100, 100, texture); 
 				MyGlobe.DrawTexCube(texture); 
 			GL11.glPopMatrix();
-		}
-		
+		}	
 	}
 		  
 	public static void main(String[] argv) {
@@ -437,15 +440,11 @@ public class MainWindow {
 		hello.start();
 	}
 	 
-	Texture texture;
-	 
-	/*
-	 * Any additional textures for your assignment should be written in here. 
-	 * Make a new texture variable for each one so they can be loaded in at the beginning 
-	 */
-	public void init() throws IOException {
-	         
+	public void init() throws IOException {      
 	  texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/earthspace.png"));
-	  System.out.println("Texture loaded okay ");
+	  faceTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/Mona.png"));
+	  bodyTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/body.png"));
+	  pelvisTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/underwear.png"));
+	  
 	}
 }

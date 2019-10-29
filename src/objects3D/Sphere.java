@@ -71,19 +71,15 @@ public class Sphere {
 		GL11.glEnd();
 	}
 
-	public void DrawTexSphere(float radius,float nSlices,float nSegments,String type,String url) throws IOException {
-		Texture texture = (Texture) TextureLoader.getTexture(type, ResourceLoader.getResourceAsStream(url));
+	public void DrawTexSphere(float radius,float nSlices,float nSegments,Texture texture) throws IOException {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL11.GL_CLAMP);
 		Color.white.bind();
 		texture.bind();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);
 		TexSphere texSphere=new TexSphere();
-		
 		texSphere.DrawTexSphere(radius, nSlices, nSegments);
-		
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		
+		GL11.glDisable(GL11.GL_TEXTURE_2D);	
 	}
 }
 
