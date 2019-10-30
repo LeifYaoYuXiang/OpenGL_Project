@@ -441,7 +441,7 @@ public class MainWindow {
 	}
 	 
 	public void init() throws IOException {      
-	  texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/earthspace.png"));
+	  texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/android.png"));
 	  faceTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/Mona.png"));
 	  bodyTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/body.png"));
 	  pelvisTexture=TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream( "res/underwear.png"));
