@@ -74,6 +74,7 @@ public class Sphere {
 	public void DrawTexSphere(float radius,float nSlices,float nSegments,Texture texture) throws IOException {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL11.GL_CLAMP);
 		Color.white.bind();
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  
 		texture.bind();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);

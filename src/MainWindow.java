@@ -29,7 +29,7 @@ import objects3D.Human;
 
 // Do not touch this class, I will be making a version of it for your 3rd Assignment 
 public class MainWindow {
-
+	
 	private  boolean MouseOnepressed = true;
 	private boolean  dragMode=false;
 	private boolean BadAnimation = true;
@@ -95,18 +95,22 @@ public class MainWindow {
 	
 
 	public void start() {
-		
-		StartTime = getTime();
+		//游戏开始的起点
+		StartTime = getTime();//获取时间
 		try {
 			Display.setDisplayMode(new DisplayMode(1200, 800));
 			Display.create();
+			//展示所创建的游戏场景
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 			System.exit(0);
 		}
 
-		initGL(); // init OpenGL
+		initGL(); 
+		//初始化游戏界面
+		
 		getDelta(); // call once before loop to initialise lastFrame
+		
 		lastFPS = getTime(); // call before loop to initialise fps timer
 		 
 		while (!Display.isCloseRequested()) {
@@ -122,55 +126,34 @@ public class MainWindow {
 
 	public void update(int delta) {
 		// rotate quad
-		//rotation += 0.01f * delta;
-		  
-		  
+		//rotation += 0.01f * delta;		  
 		int MouseX= Mouse.getX();
-		  int MouseY= Mouse.getY();
-		  int WheelPostion = Mouse.getDWheel();
-	  
-		  
-		  boolean  MouseButonPressed= Mouse.isButtonDown(0);
-		  
-		 
-		  
-		  if(MouseButonPressed && !MouseOnepressed )
-		  {
+		int MouseY= Mouse.getY();
+		int WheelPostion = Mouse.getDWheel();
+		boolean  MouseButonPressed= Mouse.isButtonDown(0);
+		
+		if(MouseButonPressed && !MouseOnepressed){
 			  MouseOnepressed =true;
-			//  System.out.println("Mouse drag mode");
 			  MyArcball.startBall( MouseX, MouseY, 1200, 800);
 			  dragMode=true;
-				
-				
-		  }else if( !MouseButonPressed)
-		  { 
-				// System.out.println("Mouse drag mode end ");
+		}else if(!MouseButonPressed){ 
 			  MouseOnepressed =false;
 			  dragMode=false;
-		  }
-		  
-		  if(dragMode)
-		  {
-			  MyArcball.updateBall( MouseX  , MouseY  , 1200, 800);
-		  }
-		  
-		  if(WheelPostion>0)
-		  {
-			  OrthoNumber += 10;
-			 
-		  }
-		  
-		  if(WheelPostion<0)
-		  {
-			  OrthoNumber -= 10;
-			  if( OrthoNumber<610)
-			  {
-				  OrthoNumber=610;
-			  }
-			  
-			//  System.out.println("Orth nubmer = " +  OrthoNumber);
-			  
-		  }
+		}
+		
+		if(dragMode){
+			MyArcball.updateBall( MouseX  , MouseY  , 1200, 800);
+		}
+		
+		if(WheelPostion>0){
+			OrthoNumber += 10;
+		}
+		if(WheelPostion<0){
+			OrthoNumber -= 10;
+			if(OrthoNumber<610){
+				OrthoNumber=610;
+			}
+		}
 		  
 		  /** rest key is R*/
 		  if (Keyboard.isKeyDown(Keyboard.KEY_R))
@@ -279,10 +262,20 @@ public class MainWindow {
 
 	public void initGL() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		//投影，把物体投影到一个平面上
 		GL11.glLoadIdentity();
+		//当前矩阵设置为单位矩阵
+		
+		//调用该函数
 		changeOrth();
-		MyArcball.startBall(0, 0, 1200,800); 
+		
+		//创建ArcBall
+		MyArcball.startBall(0, 0, 1200,800);
+		
+		//对模型视景的操作，接下来的语句描绘一个以模型为基础的适应，这样来设置参数
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		
+		
 		FloatBuffer lightPos = BufferUtils.createFloatBuffer(4);
 		lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
 
@@ -295,75 +288,82 @@ public class MainWindow {
 		FloatBuffer lightPos4 = BufferUtils.createFloatBuffer(4);
 		lightPos4.put(1000f).put(1000f).put(1000f).put(0).flip();
 
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPos); // specify the
-																	// position
-																	// of the
-																	// light
-		// GL11.glEnable(GL11.GL_LIGHT0); // switch light #0 on // I've setup specific materials so in real light it will look abit strange 
+		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPos); 
+		// specify the position of the light
+		
+		//GL11.glEnable(GL11.GL_LIGHT0); 
+		//switch light #0 on 
+		//I've setup specific materials so in real light it will look a bit strange 
 
-		GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos); // specify the
-																	// position
-																	// of the
-																	// light
+		GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos); 
+		// specify the position of the light
 		GL11.glEnable(GL11.GL_LIGHT1); // switch light #0 on
 		GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, Utils.ConvertForGL(spot));
 
-		GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPos3); // specify
-																	// the
-																	// position
-																	// of the
-																	// light
-		GL11.glEnable(GL11.GL_LIGHT2); // switch light #0 on
+		GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPos3); 
+		// specify the position of the light
+		GL11.glEnable(GL11.GL_LIGHT2); 
+		//switch light #0 on
 		GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
 
-		GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, lightPos4); // specify
-																	// the
-																	// position
-																	// of the
-																	// light
-		GL11.glEnable(GL11.GL_LIGHT3); // switch light #0 on
+		GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, lightPos4); 
+		// specify the position of the light
+		GL11.glEnable(GL11.GL_LIGHT3); 
+		// switch light #0 on
 		 GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
 
-		GL11.glEnable(GL11.GL_LIGHTING); // switch lighting on
-		GL11.glEnable(GL11.GL_DEPTH_TEST); // make sure depth buffer is switched
-											// on
-	 	GL11.glEnable(GL11.GL_NORMALIZE); // normalize normal vectors for safety
+		GL11.glEnable(GL11.GL_LIGHTING); 
+		// switch lighting on
+		GL11.glEnable(GL11.GL_DEPTH_TEST); 
+		//make sure depth buffer is switched on
+	 	GL11.glEnable(GL11.GL_NORMALIZE); 
+	 	//normalize normal vectors for safety
 	 	GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		
-		   GL11.glEnable(GL11.GL_BLEND);
-       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-          try {
+	 	GL11.glEnable(GL11.GL_BLEND);
+	 	
+	 	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	 	try {
 			init();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//在这里加载纹理信息
+		}catch (IOException e) {
 			e.printStackTrace();
-		} //load in texture
+		}
           
 
 	}
 
 	 
-
+	//在initGL(),renderGL()中都有调用
 	public void changeOrth() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		//投影，把物体投影到一个平面上
 		GL11.glLoadIdentity();
+		//当前矩阵设置为单位矩阵
 		GL11.glOrtho(1200 -  OrthoNumber , OrthoNumber, (800 - (OrthoNumber  * 0.66f)) , (OrthoNumber * 0.66f), 100000, -100000);
+		//创建一个正交平行的视景体。 一般用于物体不会因为离屏幕的远近而产生大小的变换的情况
+		//这个函数简单理解起来，就是一个物体摆在那里，你怎么去截取他
+		
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); 
+		//对模型视景的操作，接下来的语句描绘一个以模型为基础的适应，这样来设置参数
+		
+		/*
+		 * 以下的方法我并没有弄清楚，但是大意是：
+		 * 首先Camera都是静止不动的
+		 * 为了实现人移动的效果，实际上移动的是场景
+		 * */
 		FloatBuffer CurrentMatrix = BufferUtils.createFloatBuffer(16); 
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, CurrentMatrix);
 		MyArcball.getMatrix(CurrentMatrix); 
 		GL11.glLoadMatrix(CurrentMatrix);
 	}
 
-	/*
-	 * You can edit this method to add in your own objects /  remember to load in textures in the INIT method as they take time to load 
-	 * 
-	 */
+	//在这个方法中，实现的是自身设计的Model的相关动作
+	//注意：所有的Texture，应该是init()方法中加以实现的，否则会大量消耗内存
 	public void renderGL() { 
 		changeOrth();
 		
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); 
-		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  
 		GL11.glColor3f(0.5f, 0.5f, 1.0f); 
 		 
 		myDelta =   getTime() - StartTime; 
@@ -426,7 +426,7 @@ public class MainWindow {
 			    texture.bind();
 			    GL11.glEnable(GL11.GL_TEXTURE_2D);    
 			    GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);
-		        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);   
+		        GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);   
 	  
 		 	
 		        //MyGlobe.DrawTexSphere(8f, 100, 100, texture); 
