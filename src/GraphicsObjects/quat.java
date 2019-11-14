@@ -15,7 +15,7 @@ public class quat {
  
 
 	private 	float real =1f;
-	private  Vector4f imag = new Vector4f( 0.0f,0.0f,0.0f,0.0f);
+	private  Vector4f imag = new Vector4f( -0.15f,0.0f,0.0f,0.0f);
 	
 	public  quat()
 	{
