@@ -645,14 +645,14 @@ public class MainWindow {
 		}
 		GL11.glPopMatrix();
 		
-		GL11.glPushMatrix();{
-			Dog dog=new Dog();
-			GL11.glTranslatef(0, -900,5000); 
-			GL11.glScalef(180f, 180f,180f);
-			GL11.glTranslatef(posn_x*4.0f, 0.0f, posn_y*4.0f);
-			dog.drawDog(true, thetaDeg/30, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
-		}
-		GL11.glPopMatrix();
+//		GL11.glPushMatrix();{
+//			Dog dog=new Dog();
+//			GL11.glTranslatef(0, -900,5000); 
+//			GL11.glScalef(180f, 180f,180f);
+//			GL11.glTranslatef(posn_x*4.0f, 0.0f, posn_y*4.0f);
+//			dog.drawDog(true, thetaDeg/30, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+//		}
+//		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();{
 			Human human=new Human();
@@ -694,7 +694,7 @@ public class MainWindow {
 					if(this.phase1!=0) {
 						System.out.println(this.phase1);
 						if(this.phase1!=980) {
-							float dv=(float) (3.2*(this.phase1-980));
+							float dv=(float) (3.6*(this.phase1-980));
 							this.human_posn_x=this.human_posn_x+dv;
 						}
 						this.phase1=0;

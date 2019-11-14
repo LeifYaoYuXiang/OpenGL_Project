@@ -58,6 +58,7 @@ public class Dog {
 			  * this function is used to implement the self-rotation
 			  * theory behind it: each draw one human being you rotate along y-axis "thetaDeg" degree
 			  * */
+			 GL11.glRotatef(90, 0, -1, 0);
 			 if(rotateSelf) {
 				 GL11.glRotatef(-thetaDeg/10,0.0f,1.0f, 0.0f);
 			 }else {
