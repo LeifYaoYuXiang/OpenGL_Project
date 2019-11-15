@@ -19,7 +19,6 @@ import org.newdawn.slick.util.ResourceLoader;
 import GraphicsObjects.Arcball;
 import GraphicsObjects.Utils;
 import objects3D.TexCube;
-import objects3D.TexSphere;
 import objects3D.Bed;
 import objects3D.Chair;
 import objects3D.Dog;
@@ -104,38 +103,13 @@ public class MainWindow {
 	float theta;
 	float delta;
 	
-	/*参数Configuration：
-	 * 草地（背景）:
-	 * 房间长：
-	 * 房间宽：
-	 * 房间高：
-	 * --->后方砖墙：
-	 * --->左侧方砖墙：
-	 * --->右侧方砖墙：
-	 * 房间中心位置：
-	 * 
-	 * 画像长：
-	 * 画像宽：
-	 * 
-	 * 桌子高度：400
-	 * 桌子长/宽：1000
-	 * 桌子位置：
-	 * 
-	 * 椅子高度：
-	 * 椅子长/宽：
-	 * 椅子位置：
-	 * 
-	 * 
-	 * 床高度：
-	 * 床长/宽：
-	 * 床位置：
-	 * 
-	 * 
-	 * */
-	
 	float human_posn_x=1500;
 	float human_posn_y=-420;
 	float human_posn_z=4200;
+	
+	float dog_posn_x=0;
+	float dog_posn_y=-900;
+	float dog_posn_z=5000;
 	
 	float human_sit_distance=0f;
 	float human_sit_step=0.001f;
@@ -171,6 +145,10 @@ public class MainWindow {
 	int phase1=0;
 	int phase2=0;
 	int phase4=0;
+	
+	int dogPhase1=0;
+	int dogPhase2=0;
+	
 	Texture texture;
 	Texture faceTexture;
 	Texture bodyTexture;
@@ -347,22 +325,22 @@ public class MainWindow {
 		if (getTime() - lastFPS > 1000) {
 			int humanLoop=(int) delta;
 			int humanPhase=humanLoop%7;
-			if(humanPhase==0) {
-				Display.setTitle("Daily Life: John is waking up and stretching himslef");
-			}
-			if(humanPhase==1||humanPhase==2) {
-				Display.setTitle("Daily Life: John is walking to the table");
-			}
-			if(humanPhase==3) {
-				Display.setTitle("Daily Life: John is enjoying Cartoon");
-			}
-			if(humanPhase==4) {
-				Display.setTitle("Daily Life: John is ready for excerise");
-			}
-			if(humanPhase==5||humanPhase==6) {
-				Display.setTitle("Daily Life:John is running on the running machine");
-			}
-			//Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
+//			if(humanPhase==0) {
+//				Display.setTitle("Daily Life: John is waking up and stretching himslef");
+//			}
+//			if(humanPhase==1||humanPhase==2) {
+//				Display.setTitle("Daily Life: John is walking to the table");
+//			}
+//			if(humanPhase==3) {
+//				Display.setTitle("Daily Life: John is enjoying Cartoon");
+//			}
+//			if(humanPhase==4) {
+//				Display.setTitle("Daily Life: John is ready for excerise");
+//			}
+//			if(humanPhase==5||humanPhase==6) {
+//				Display.setTitle("Daily Life:John is running on the running machine");
+//			}
+			Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
 			fps = 0;
 			lastFPS += 1000;
 		}
@@ -386,16 +364,16 @@ public class MainWindow {
 		
 		
 		FloatBuffer lightPos = BufferUtils.createFloatBuffer(4);
-		lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
-
+		lightPos.put(1000).put(1000f).put(1000).put(1000).flip();
+		//lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
 		FloatBuffer lightPos2 = BufferUtils.createFloatBuffer(4);
-		lightPos2.put(0f).put(1000f).put(0).put(-1000f).flip();
+		lightPos2.put(1000).put(1000).put(1000).put(0).flip();
 
 		FloatBuffer lightPos3 = BufferUtils.createFloatBuffer(4);
-		lightPos3.put(-10000f).put(1000f).put(1000).put(0).flip();
+		lightPos3.put(1000).put(1000).put(0).put(0).flip();
 
 		FloatBuffer lightPos4 = BufferUtils.createFloatBuffer(4);
-		lightPos4.put(1000f).put(1000f).put(1000f).put(0).flip();
+		lightPos4.put(1000).put(1000).put(1000).put(0).flip();
 		//以上皆是对光照参数的修订
 		
 		/*
@@ -511,7 +489,7 @@ public class MainWindow {
 		GL11.glColor3f(0.5f, 0.5f, 1.0f); 
 		
 		myDelta =   getTime() - StartTime; 
-		this.delta =((float) myDelta)/10000;
+		this.delta =((float) myDelta)/5000;
 		//System.out.println(delta);
 		theta = (float) (delta * 2 * Math.PI);
 		float thetaDeg = delta * 360; 
@@ -594,7 +572,7 @@ public class MainWindow {
 		//椅子
 		GL11.glPushMatrix();{
 			GL11.glTranslatef(-3000,0,6000);
-			GL11.glTranslatef(1900,-700,-750);
+			GL11.glTranslatef(2050,-700,-550);
 			GL11.glScalef(1,2,1.2f);
 			Chair chair=new Chair();
 			chair.drawChair();
@@ -626,7 +604,7 @@ public class MainWindow {
 		GL11.glPushMatrix();{
 			Television tv=new Television();
 			GL11.glTranslatef(-3000,0,6000);
-			GL11.glTranslatef(+600, -400, -800);
+			GL11.glTranslatef(+600, -300, -800);
 			GL11.glRotatef(-45, 0, 1, 0);
 			GL11.glRotatef(-90, 0, 0, 1);
 			int animationLoop=(int) delta;
@@ -645,14 +623,77 @@ public class MainWindow {
 		}
 		GL11.glPopMatrix();
 		
-//		GL11.glPushMatrix();{
-//			Dog dog=new Dog();
-//			GL11.glTranslatef(0, -900,5000); 
-//			GL11.glScalef(180f, 180f,180f);
-//			GL11.glTranslatef(posn_x*4.0f, 0.0f, posn_y*4.0f);
-//			dog.drawDog(true, thetaDeg/30, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
-//		}
-//		GL11.glPopMatrix();
+		GL11.glPushMatrix();{
+			Dog dog=new Dog();
+			float dog_step_x=0;
+			float dog_step_y=0;
+			float dog_step_z=0;
+			GL11.glTranslatef(this.dog_posn_x,this.dog_posn_y,this.dog_posn_z); 
+			int dogLoop=(int) delta;
+			int dogPhase=dogLoop%4;
+			if(dogPhase==0) {
+				this.dog_posn_x=0;
+				this.dog_posn_y=-900;
+				this.dog_posn_z=5000;
+				GL11.glPushMatrix();{
+					GL11.glScalef(180f, 180f, 180f);
+					float tempDeltaDegree=this.delta*360;
+					dog.drawDog(true, thetaDeg/130, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+				}
+				GL11.glPopMatrix();
+			}
+			if(dogPhase==1) {
+				GL11.glPushMatrix();{
+					GL11.glTranslatef(0, 0, 0);
+					GL11.glRotatef(180, 0, 1, 0);
+					GL11.glScalef(180f, 180f, 180f);
+					dog_step_x=1.3f;
+					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+					this.dog_posn_x=this.dog_posn_x-dog_step_x;
+					this.dogPhase1++;
+				}
+				GL11.glPopMatrix();	
+			}
+			if(dogPhase==2) {
+				GL11.glPushMatrix();{
+					GL11.glTranslatef(1200,0,0);
+					GL11.glScalef(180f, 180f, 180f);
+					if(this.dogPhase1!=0) {
+						System.out.println("DP1:"+this.dogPhase1);
+						if(this.dogPhase1!=1300) {
+							float dv=(float) (1.3*(this.dogPhase1-1330));
+							this.dog_posn_x=this.dog_posn_x+dv;
+						}
+						this.dogPhase1=0;
+					}
+					GL11.glRotatef(-90, 0, 1, 0);
+					dog_step_z=-0.9f;
+					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+					this.dog_posn_z=this.dog_posn_z-dog_step_z;
+					this.dogPhase2++;
+				}
+				GL11.glPopMatrix();
+			}
+			if(dogPhase==3) {
+				GL11.glPushMatrix();{
+					GL11.glTranslatef(1200,0,0);
+					GL11.glScalef(180f, 180f, 180f);
+					if(this.dogPhase2!=0) {
+						System.out.println("DP2:"+this.dogPhase2);
+						this.dogPhase2=0;
+					}
+					GL11.glRotatef(0, 0, 1, 0);
+					dog_step_x=-1.3f;
+					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+					this.dog_posn_x=this.dog_posn_x-dog_step_x;
+				}
+				GL11.glPopMatrix();
+				
+				
+			}
+			
+		}
+		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();{
 			Human human=new Human();
@@ -681,7 +722,7 @@ public class MainWindow {
 					GL11.glTranslatef(350, -200, -200);
 					GL11.glScalef(250f, 250f, 250f);
 					GL11.glRotatef(90, 0, 1, 0);
-					human_step_x=3.2f;
+					human_step_x=9.2f;
 					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
 					this.human_posn_x=this.human_posn_x-human_step_x;
 					this.phase1++;
@@ -692,16 +733,16 @@ public class MainWindow {
 				GL11.glPushMatrix();{
 					GL11.glTranslatef(110,-150,-200);
 					if(this.phase1!=0) {
-						System.out.println(this.phase1);
-						if(this.phase1!=980) {
-							float dv=(float) (3.6*(this.phase1-980));
+						System.out.println("HM1:"+this.phase1);
+						if(this.phase1!=470) {
+							float dv=(float) (9.2*(this.phase1-330));
 							this.human_posn_x=this.human_posn_x+dv;
 						}
 						this.phase1=0;
 					}
 					GL11.glScalef(250f, 250f, 250f);
 					GL11.glRotatef(180, 0, -1, 0);
-					human_step_z=1.5f;
+					human_step_z=5.8f;
 					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
 					this.human_posn_z=this.human_posn_z+human_step_z;
 					this.phase2++;
@@ -711,16 +752,15 @@ public class MainWindow {
 			if(humanPhase==3) {
 				GL11.glPushMatrix();{
 					if(this.phase2!=0) {
-						System.out.println(this.phase2);
+						System.out.println("HP2:"+this.phase2);
 						if(this.phase2!=1010) {
-							float dv=(float) (1.5*(this.phase2-1010));
+							float dv=(float) (5.8*(this.phase2-310));
 							this.human_posn_z=this.human_posn_z-dv;
 						}
 						this.phase2=0;
 					}
-					GL11.glTranslatef(450,-150, -120);
+					GL11.glTranslatef(500,-200, -100);
 					GL11.glScalef(250f, 250f, 250f);
-					//GL11.glRotatef(90, 0, 1, 0);
 					float tempDelta=delta-3-7*(humanLoop/7);
 					human.DrawSittingHuman(tempDelta,false,faceTexture, bodyTexture, dogPelvisTexture,this.human_sit_distance);
 					this.human_sit_distance=this.human_sit_distance+this.human_sit_step;
@@ -731,7 +771,7 @@ public class MainWindow {
 				GL11.glPushMatrix();{
 					GL11.glTranslatef(500, -150, -100);
 					GL11.glScalef(220f, 220f, 220f);
-					human_step_z=3.6f;
+					human_step_z=7.2f;
 					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
 					this.human_posn_z=this.human_posn_z-human_step_z;
 					this.phase4++;
@@ -741,19 +781,16 @@ public class MainWindow {
 			if(humanPhase==5||humanPhase==6) {
 				GL11.glPushMatrix();{
 					if(this.phase4!=0) {
-						System.out.println(this.phase4);
 						if(this.phase4!=930) {
-							float dv=(float) (3.6*(this.phase4-930));
+							float dv=(float) (7.2*(this.phase4-480));
 							this.human_posn_z=this.human_posn_z+dv;
 						}
 						this.phase4=0;
 					}
 					GL11.glTranslatef(500, -150, 100);
 					GL11.glScalef(220f, 220f, 220f);
-					//GL11.glTranslatef(posn_x*3.0f, 0.0f, posn_y*3.0f);
 					GL11.glRotatef(90, 0, 1, 0);
 					human.DrawHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-					//human.DrawWithdrawHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture, 90);
 				}
 				GL11.glPopMatrix();
 			}

@@ -301,4 +301,8 @@ public class Dog {
 			 GL11.glPopMatrix();//pop matrix --> empty stack !
 		 } 
 	}
+
+	public void drawWalkingDog(boolean rotateSelf,float delta,boolean GoodAnimation, Texture faceTexture, Texture bodyTexture, Texture pelvisTexture) {
+		
+	}
 }

@@ -278,7 +278,7 @@ public class Human {
 		                    GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
 		                    GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the cylinder 
 		                    
-		                    GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the cylinder to simulate the action of running legs
+		                    GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the cylinder to simulate the action of running legs
 		                    cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for high legs
 
 		                    // left knee
@@ -341,7 +341,7 @@ public class Human {
 		       		 {
 		       			 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
 		       			 GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the coordinate system
-		       			 GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the coordinate system (LimbRotation+90) degree along (1.0,0.0,0.0) w
+		       			 GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the coordinate system (LimbRotation+90) degree along (1.0,0.0,0.0) w
 		       			 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for right high pen 
 				         
 		       			 //right knee
@@ -1044,7 +1044,7 @@ public class Human {
 				                    GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
 				                    GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the cylinder 
 				                    
-				                    GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the cylinder to simulate the action of running legs
+				                    GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the cylinder to simulate the action of running legs
 				                    cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for high legs
 
 				                    // left knee
@@ -1063,10 +1063,10 @@ public class Human {
 				                   	 	GL11.glMaterial( GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE,  Utils.ConvertForGL(orange));
 				                        GL11.glPushMatrix(); 
 				                        {
-				                        	if(LimbRotation>0) {
-				                        		//if the left low leg is behind the body, then we need to rotate it up
-					       						GL11.glRotatef((-LimbRotation),1.0f,0.0f,0.0f);
-					       					 }
+//				                        	if(LimbRotation>0) {
+//				                        		//if the left low leg is behind the body, then we need to rotate it up
+//					       						GL11.glRotatef((-LimbRotation),1.0f,0.0f,0.0f);
+//					       					 }
 				                        	GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the cylinder
 				                            cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for left low leg
 
@@ -1107,7 +1107,7 @@ public class Human {
 				       		 {
 				       			 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't translate the coordinate system
 				       			 GL11.glRotatef(0.0f,0.0f,0.0f,0.0f);//doesn't rotate the coordinate system
-				       			 GL11.glRotatef((LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the coordinate system (LimbRotation+90) degree along (1.0,0.0,0.0) w
+				       			 GL11.glRotatef((-LimbRotation)+90,1.0f,0.0f,0.0f); //rotate the coordinate system (LimbRotation+90) degree along (1.0,0.0,0.0) w
 				       			 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for right high pen 
 						         
 				       			 //right knee
@@ -1127,10 +1127,10 @@ public class Human {
 				       				 GL11.glPushMatrix(); 
 				       				 {
 				       					 GL11.glTranslatef(0.0f,0.0f,0.0f);//doesn't rotate the coordinate system
-				       					 if(LimbRotation<0) {
-				       						 //if the right leg is behind the body
-				       						 GL11.glRotatef((LimbRotation),1.0f,0.0f,0.0f);//rotate the right leg up
-				       					 }
+//				       					 if(LimbRotation<0) {
+//				       						 //if the right leg is behind the body
+//				       						 GL11.glRotatef((LimbRotation),1.0f,0.0f,0.0f);//rotate the right leg up
+//				       					 }
 				       					 cylinder.DrawCylinder(0.15f,0.7f,32);//draw the cylinder standing for leg
 				       					 
 				       					 //right foot

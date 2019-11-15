@@ -45,6 +45,8 @@ public class Television {
 			texCube.DrawTexCube(animation);
 	        GL11.glDisable(GL11.GL_TEXTURE_2D);
 	        
+	        ///GL11.glTranslatef(length/2, 0, 0);
+	        
 			GL11.glPushMatrix();{
 				GL11.glTranslatef(0, 0, depth);
 				GL11.glColor3f(black[0], black[1],black[2]);
