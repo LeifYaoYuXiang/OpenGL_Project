@@ -325,22 +325,22 @@ public class MainWindow {
 		if (getTime() - lastFPS > 1000) {
 			int humanLoop=(int) delta;
 			int humanPhase=humanLoop%7;
-//			if(humanPhase==0) {
-//				Display.setTitle("Daily Life: John is waking up and stretching himslef");
-//			}
-//			if(humanPhase==1||humanPhase==2) {
-//				Display.setTitle("Daily Life: John is walking to the table");
-//			}
-//			if(humanPhase==3) {
-//				Display.setTitle("Daily Life: John is enjoying Cartoon");
-//			}
-//			if(humanPhase==4) {
-//				Display.setTitle("Daily Life: John is ready for excerise");
-//			}
-//			if(humanPhase==5||humanPhase==6) {
-//				Display.setTitle("Daily Life:John is running on the running machine");
-//			}
-			Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
+			if(humanPhase==0) {
+				Display.setTitle("Daily Life: John is waking up and stretching himslef");
+			}
+			if(humanPhase==1||humanPhase==2) {
+				Display.setTitle("Daily Life: John is walking to the table");
+			}
+			if(humanPhase==3) {
+				Display.setTitle("Daily Life: John is enjoying Cartoon");
+			}
+			if(humanPhase==4) {
+				Display.setTitle("Daily Life: John is ready for excerise");
+			}
+			if(humanPhase==5||humanPhase==6) {
+				Display.setTitle("Daily Life:John is running on the running machine");
+			}
+			//Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
 			fps = 0;
 			lastFPS += 1000;
 		}
