@@ -19,6 +19,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import GraphicsObjects.Arcball;
 import GraphicsObjects.Utils;
 import objects3D.TexCube;
+import objects3D.TexSphere;
 import objects3D.Bed;
 import objects3D.Chair;
 import objects3D.Dog;
@@ -27,12 +28,10 @@ import objects3D.House;
 import objects3D.Human;
 import objects3D.Photo;
 import objects3D.RunningMachine;
+import objects3D.Sphere;
+import objects3D.SwimmingPool;
 import objects3D.Table;
 import objects3D.Television; 
-
-//Main windows class controls and creates the 3D virtual world , please do not change this class but edit the other classes to complete the assignment. 
-// Main window is built upon the standard Helloworld LWJGL class which I have heavily modified to use as your standard openGL environment. 
-// Do not touch this class, I will be making a version of it for your 3rd Assignment 
 
 /*
  * 我对MainWindow类的运作的理解：
@@ -97,12 +96,12 @@ public class MainWindow {
 			//3670;
 			//6340
 	int update=0;
-	int last_update=0;
+	
+//	int last_update=0;
+	
+	
 	float posn_x;
 	float posn_y;
-	float theta;
-	float delta;
-	
 	float human_posn_x=1500;
 	float human_posn_y=-420;
 	float human_posn_z=4200;
@@ -111,11 +110,48 @@ public class MainWindow {
 	float dog_posn_y=-900;
 	float dog_posn_z=5000;
 	
+	float theta;
+	float delta;
+	
+	//Project 2
+//	float human_posn_x=1800;
+//	float human_posn_y=-600;
+//	float human_posn_z=3000;
+//	float human_rotate=0;
+//	
+//	float human_x_step=5;
+//	float human_z_step=5;
+//	float human_rotate_step=2;
+	
+	
+	boolean wPressed=false;
+	int wExecutionCount=0;
+	int lastWExecution=-1;
+	//向前走
+	boolean sPressed=false;
+	//向后走（先转身）
+	boolean aPressed=false;
+	//向左走（先转身）
+	boolean dPressed=false;
+	//向右走（先转身）
+	
+	boolean leftPressed=false;
+	//向左转身
+	boolean rightPressed=false;
+	//向右转身
+	boolean spacePressed=false;
+	//跳起
+	
+	boolean mPressed=false;
+	//上床
+	boolean nPressed=false;
+	//下床	
+	boolean pPressed=false;
+	//坐椅子上
+	
+	
 	float human_sit_distance=0f;
 	float human_sit_step=0.001f;
-	
-	boolean riverBoolean=true;
-	
 	
 	// using this for screen size, making a window of 1200 x 800 so aspect ratio 3:2 
 	// do not change this for assignment 3 but you can change everything for your project 
@@ -149,27 +185,43 @@ public class MainWindow {
 	int dogPhase1=0;
 	int dogPhase2=0;
 	
+	boolean waterChange=false;
+	
 	Texture texture;
 	Texture faceTexture;
 	Texture bodyTexture;
 	Texture pelvisTexture;
+	
 	Texture redWallTexture;
 	Texture floorTexture;
 	Texture grassTexture;
 	Texture skyTexture;
+	
 	Texture drawings1;
 	Texture drawings2;
 	Texture drawings3;
+	
 	Texture bedTexture;
 	Texture dogHeadTexture;
 	Texture dogBodyTexture;
 	Texture dogPelvisTexture;
-	Texture riverpast;
-	Texture riverlast;
+	
+	Texture waterTexture;
+	Texture waterTexture2;
+	Texture whitewallTexture;
+	
+	
 	Texture animation1;
 	Texture animation2;
 	Texture animation3;
 	Texture animation4;
+	Texture animation5;
+	Texture animation6;
+	Texture animation7;
+	Texture animation8;
+	
+	
+	
 	Texture panel;
 	Texture machineBottom;
 	// static GLfloat light_position[] = {0.0, 100.0, 100.0, 0.0};
@@ -237,47 +289,60 @@ public class MainWindow {
 				OrthoNumber=610;
 			}
 		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			wPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			aPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			sPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			dPressed=true;
+		}
+		
 		  
 		/** rest key is R*/
-		if (Keyboard.isKeyDown(Keyboard.KEY_R))
-			  MyArcball.reset();
-		  
-		/* bad animation can be turn on or off using A key)*/ 
-		if (Keyboard.isKeyDown(Keyboard.KEY_A))
-			BadAnimation=!BadAnimation;
-		if (Keyboard.isKeyDown(Keyboard.KEY_D))
-			x += 0.35f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_W))
-			y += 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_S))
-			y -= 0.35f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_Q))
-			rotation += 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_E)){
-			Earth=!Earth;
-		} 
+//		if (Keyboard.isKeyDown(Keyboard.KEY_R))
+//			  MyArcball.reset(); 
+//		/* bad animation can be turn on or off using A key)*/ 
+//		if (Keyboard.isKeyDown(Keyboard.KEY_A))
+//			BadAnimation=!BadAnimation;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_D))
+//			x += 0.35f * delta;
+//
+//		if (Keyboard.isKeyDown(Keyboard.KEY_W))
+//			y += 0.35f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_S))
+//			y -= 0.35f * delta;
+//
+//		if (Keyboard.isKeyDown(Keyboard.KEY_Q))
+//			rotation += 0.35f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_E)){
+//			Earth=!Earth;
+//		} 
 		
 		// check done to see if key is released 
-		if(waitForKeyrelease){
-			if (Keyboard.isKeyDown(Keyboard.KEY_G)){
-				DRAWGRID = !DRAWGRID;
-				Keyboard.next();
-				if(Keyboard.isKeyDown(Keyboard.KEY_G)){
-					waitForKeyrelease=true;
-				}else{
-					waitForKeyrelease=false;
-				}
-			}
-		 }
+//		if(waitForKeyrelease){
+//			if (Keyboard.isKeyDown(Keyboard.KEY_G)){
+//				DRAWGRID = !DRAWGRID;
+//				Keyboard.next();
+//				if(Keyboard.isKeyDown(Keyboard.KEY_G)){
+//					waitForKeyrelease=true;
+//				}else{
+//					waitForKeyrelease=false;
+//				}
+//			}
+//		 }
 		 
 		 /** to check if key is released */
-		if(Keyboard.isKeyDown(Keyboard.KEY_G)==false){
-			waitForKeyrelease=true;
-		}else{
-			waitForKeyrelease=false;	
-		}
+//		if(Keyboard.isKeyDown(Keyboard.KEY_G)==false){
+//			waitForKeyrelease=true;
+//		}else{
+//			waitForKeyrelease=false;	
+//		}
 		 
 		// keep quad on the screen
 		if (x < 0)
@@ -494,8 +559,8 @@ public class MainWindow {
 		theta = (float) (delta * 2 * Math.PI);
 		float thetaDeg = delta * 360; 
 		
-		posn_x = (float) Math.cos(theta-Math.PI/2); 
-		posn_y  = (float) Math.sin(theta-Math.PI/2);
+//		posn_x = (float) Math.cos(theta-Math.PI/2); 
+//		posn_y  = (float) Math.sin(theta-Math.PI/2);
 
 		//决定是否画栅格图案
 		if(DRAWGRID) {
@@ -600,6 +665,14 @@ public class MainWindow {
 		}
 		GL11.glPopMatrix();
 		
+		//游泳池
+		GL11.glPushMatrix();{
+			SwimmingPool swimmingPool=new SwimmingPool();  
+			GL11.glTranslatef(1800,-1000,1200);
+			swimmingPool.drawSwimmingPool(1200, 1200, 400, waterTexture,whitewallTexture);
+		}
+		GL11.glPopMatrix();
+		
 		//电视
 		GL11.glPushMatrix();{
 			Television tv=new Television();
@@ -609,20 +682,40 @@ public class MainWindow {
 			GL11.glRotatef(-90, 0, 0, 1);
 			int animationLoop=(int) delta;
 			float animationPhase=delta-animationLoop;
-			if(animationPhase<0.25) {
+			if(animationPhase<0.125) {
 				tv.DrawTelevision(200, 200, 200, animation1);	
 			}
-			else if(animationPhase>=0.25&&animationPhase<0.5) {
+			else if(animationPhase>=0.125&&animationPhase<0.25) {
 				tv.DrawTelevision(200, 200, 200, animation2);
-			}else if(animationPhase>=0.5&&animationPhase<0.75) {
+			}else if(animationPhase>=0.25&&animationPhase<0.375) {
 				tv.DrawTelevision(200, 200, 200, animation3);
 			}
-			else {
+			else if(animationPhase>=0.375&&animationPhase<0.5){
 				tv.DrawTelevision(200, 200, 200, animation4);
-			}	
+			}
+			else if (animationPhase>=0.5&&animationPhase<0.6125) {
+				tv.DrawTelevision(200, 200, 200, animation5);
+			}
+			else if (animationPhase>=0.6125&&animationPhase<0.75) {
+				tv.DrawTelevision(200, 200, 200, animation6);
+			}
+			else if (animationPhase>=0.75&&animationPhase<0.8375) {
+				tv.DrawTelevision(200, 200, 200, animation7);
+			}
+			else {
+				tv.DrawTelevision(200, 200, 200, animation8);
+			}
 		}
 		GL11.glPopMatrix();
 		
+		GL11.glPushMatrix();{
+			
+		}
+		GL11.glPopMatrix();
+		
+		/*
+		 * The following part is about Project 1:animated scene
+		 * */
 		GL11.glPushMatrix();{
 			Dog dog=new Dog();
 			float dog_step_x=0;
@@ -722,7 +815,7 @@ public class MainWindow {
 					GL11.glTranslatef(350, -200, -200);
 					GL11.glScalef(250f, 250f, 250f);
 					GL11.glRotatef(90, 0, 1, 0);
-					human_step_x=9.2f;
+					human_step_x=13.2f;
 					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
 					this.human_posn_x=this.human_posn_x-human_step_x;
 					this.phase1++;
@@ -735,7 +828,7 @@ public class MainWindow {
 					if(this.phase1!=0) {
 						System.out.println("HM1:"+this.phase1);
 						if(this.phase1!=470) {
-							float dv=(float) (9.2*(this.phase1-330));
+							float dv=(float) (13.2*(this.phase1-220));
 							this.human_posn_x=this.human_posn_x+dv;
 						}
 						this.phase1=0;
@@ -759,8 +852,8 @@ public class MainWindow {
 						}
 						this.phase2=0;
 					}
-					GL11.glTranslatef(500,-200, -100);
-					GL11.glScalef(250f, 250f, 250f);
+					GL11.glTranslatef(320,-200, -100);
+					GL11.glScalef(250f, 250f, 250f)  ;
 					float tempDelta=delta-3-7*(humanLoop/7);
 					human.DrawSittingHuman(tempDelta,false,faceTexture, bodyTexture, dogPelvisTexture,this.human_sit_distance);
 					this.human_sit_distance=this.human_sit_distance+this.human_sit_step;
@@ -769,9 +862,9 @@ public class MainWindow {
 			}
 			if(humanPhase==4) {
 				GL11.glPushMatrix();{
-					GL11.glTranslatef(500, -150, -100);
+					GL11.glTranslatef(300, -150, -100);
 					GL11.glScalef(220f, 220f, 220f);
-					human_step_z=7.2f;
+					human_step_z=14.2f;
 					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
 					this.human_posn_z=this.human_posn_z-human_step_z;
 					this.phase4++;
@@ -781,8 +874,9 @@ public class MainWindow {
 			if(humanPhase==5||humanPhase==6) {
 				GL11.glPushMatrix();{
 					if(this.phase4!=0) {
+						System.out.println(this.phase4);
 						if(this.phase4!=930) {
-							float dv=(float) (7.2*(this.phase4-480));
+							float dv=(float) (14.2*(this.phase4-230));
 							this.human_posn_z=this.human_posn_z+dv;
 						}
 						this.phase4=0;
@@ -797,7 +891,39 @@ public class MainWindow {
 			
 			GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 	
 		}
-		GL11.glPopMatrix();	
+		GL11.glPopMatrix();
+		
+//		GL11.glPushMatrix();{
+//			{
+//				if(wPressed) {
+//					System.out.println("W pressed");
+//					human_posn_z=human_posn_z+human_z_step;
+//				}
+//				if(aPressed) {
+//					System.out.println("A Pressed");
+//					human_posn_x=human_posn_x-human_x_step;
+//				}
+//				if(sPressed) {
+//					System.out.println("S Pressed");
+//					human_posn_z=human_posn_z-human_z_step;
+//				}
+//				if(dPressed) {
+//					System.out.println("D Pressed");
+//					human_posn_x=human_posn_x+human_x_step;
+//				}
+//				Human human=new Human();
+//				GL11.glTranslatef(this.human_posn_x, this.human_posn_y, this.human_posn_z);
+//				GL11.glScalef(220f, 220f, 220f);
+//				human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
+//				
+//				
+//				wPressed=false;
+//				aPressed=false;
+//				sPressed=false;
+//				dPressed=false;
+//			}
+//		}
+//		GL11.glPopMatrix();
 	}
 		  
 	public static void main(String[] argv) {
@@ -823,12 +949,20 @@ public class MainWindow {
 	  dogHeadTexture=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/dogHead.png"));
 	  this.dogBodyTexture=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/dogBody.png"));
 	  this.dogPelvisTexture=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/dogPelvis.png"));
-	  this.riverpast=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/riverlater.png"));
-	  this.riverlast=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/riverpast.png"));
+	  
+	  waterTexture=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/Water.png"));
+	  whitewallTexture=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/whitewall.png"));
+	  waterTexture2=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/water1.png"));
+	  
 	  this.animation1=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO1.png"));
 	  this.animation2=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO2.png"));
 	  this.animation3=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO3.png"));
 	  this.animation4=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO4.png"));
+	  this.animation5=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO5.png"));
+	  this.animation6=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO6.png"));
+	  this.animation7=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO7.png"));
+	  this.animation8=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/JOJO8.png"));
+	  
 	  this.panel=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/panel.png"));
 	  this.machineBottom=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/machineBottom.png"));
 	}

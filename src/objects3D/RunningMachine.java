@@ -32,10 +32,9 @@ public class RunningMachine {
 	}
 	
 	public void DrawRunningMachine(Texture panel, Texture machineBottom) {
-		Cube cube=new Cube();
 		Cylinder cylinder=new Cylinder();
 		TexCube bottom=new TexCube();
-		TexCube up=new TexCube();
+		Sphere sphere=new Sphere();
 		GL11.glPushMatrix();{
 			GL11.glColor3f(blue[0], blue[1], blue[2]);
 			GL11.glScalef(900,50,500);
@@ -70,19 +69,16 @@ public class RunningMachine {
 		GL11.glPopMatrix();
 		
 		GL11.glPushMatrix();{
-			GL11.glColor3f(blue[0], blue[1], blue[2]);
+			GL11.glColor3f(black[0], black[1], black[2]);
 			GL11.glTranslatef(-600, 800, 0);
 			GL11.glRotatef(-30, 0, 0, 1);
 			GL11.glScalef(200,50,500);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL11.GL_CLAMP);
-			Color.white.bind();
-		    panel.bind();
-		    GL11.glEnable(GL11.GL_TEXTURE_2D);    
-		    GL11.glTexParameteri( GL11.GL_TEXTURE_2D,  GL11.GL_TEXTURE_MAG_FILTER,  GL11.GL_NEAREST);
-	        GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-			up.DrawTexCube(panel);
-	        GL11.glDisable(GL11.GL_TEXTURE_2D);
-			
+			try {
+				sphere.DrawTexSphere(1.2f, 50, 50, panel);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			//sphere.DrawSphere(1.2f, 50, 50);
 		}
 		GL11.glPopMatrix();
 	}
