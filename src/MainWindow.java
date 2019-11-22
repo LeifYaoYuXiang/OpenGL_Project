@@ -432,13 +432,13 @@ public class MainWindow {
 		lightPos.put(1000).put(1000f).put(1000).put(1000).flip();
 		//lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
 		FloatBuffer lightPos2 = BufferUtils.createFloatBuffer(4);
-		lightPos2.put(1000).put(1000).put(1000).put(1000).flip();
+		lightPos2.put(1000).put(1000).put(1000).put(0).flip();
 
 		FloatBuffer lightPos3 = BufferUtils.createFloatBuffer(4);
-		lightPos3.put(1000).put(1000).put(0).put(1000).flip();
+		lightPos3.put(1000).put(1000).put(0).put(0).flip();
 
 		FloatBuffer lightPos4 = BufferUtils.createFloatBuffer(4);
-		lightPos4.put(1000).put(1000).put(1000).put(1000).flip();
+		lightPos4.put(1000).put(1000).put(1000).put(0).flip();
 		//以上皆是对光照参数的修订
 		
 		/*
