@@ -2,6 +2,8 @@
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -22,6 +24,7 @@ import objects3D.TexCube;
 import objects3D.TexSphere;
 import objects3D.Bed;
 import objects3D.Chair;
+import objects3D.ChinUp;
 import objects3D.Dog;
 import objects3D.Grid;
 import objects3D.House;
@@ -97,65 +100,43 @@ public class MainWindow {
 			//6340
 	int update=0;
 	
-//	int last_update=0;
-	
-	
-	float posn_x;
-	float posn_y;
-	float human_posn_x=1500;
-	float human_posn_y=-420;
-	float human_posn_z=4200;
-	
-	float dog_posn_x=0;
-	float dog_posn_y=-900;
-	float dog_posn_z=5000;
-	
 	float theta;
 	float delta;
 	
 	//Project 2
-//	float human_posn_x=1800;
-//	float human_posn_y=-600;
-//	float human_posn_z=3000;
-//	float human_rotate=0;
-//	
-//	float human_x_step=5;
-//	float human_z_step=5;
-//	float human_rotate_step=2;
+	float human_posn_x=1800;
+	float human_posn_y=-600;
+	float human_posn_z=3000;
 	
+	//用来记录人旋转了多少角度
+	float human_rotate=0;
+	//用来记录每一次旋转多少角度
+	float human_rotate_step=1f;
 	
+	//用来表示一步多长
+	float human_step=5;
+	
+	//向前行进
 	boolean wPressed=false;
-	int wExecutionCount=0;
-	int lastWExecution=-1;
-	//向前走
-	boolean sPressed=false;
-	//向后走（先转身）
+	//向左转弯
 	boolean aPressed=false;
-	//向左走（先转身）
+	//向右转弯
 	boolean dPressed=false;
-	//向右走（先转身）
 	
-	boolean leftPressed=false;
-	//向左转身
-	boolean rightPressed=false;
-	//向右转身
-	boolean spacePressed=false;
-	//跳起
+	//跑步机上跑步
+	boolean rPressed=false;
 	
-	boolean mPressed=false;
-	//上床
-	boolean nPressed=false;
-	//下床	
-	boolean pPressed=false;
-	//坐椅子上
+	//引体向上
+	boolean lPressed=false;
 	
+	//站在台阶上准备游泳
+	boolean readySwimming=false;
+	//进入游泳池中
+	boolean inSwimming=false;
+	//游泳
+	boolean sPressed=false;
 	
-	float human_sit_distance=0f;
-	float human_sit_step=0.001f;
-	
-	// using this for screen size, making a window of 1200 x 800 so aspect ratio 3:2 
-	// do not change this for assignment 3 but you can change everything for your project 
-	
+	boolean swimmingFromLeft=true;
 	// basic colors
 	static float black[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	static float white[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -178,14 +159,7 @@ public class MainWindow {
 	static float dkgreen[] = { 0.0f, 0.5f, 0.0f, 1.0f, 1.0f };
 	static float pink[] = { 1.0f, 0.6f, 0.6f, 1.0f, 1.0f };
 	
-	int phase1=0;
-	int phase2=0;
-	int phase4=0;
 	
-	int dogPhase1=0;
-	int dogPhase2=0;
-	
-	boolean waterChange=false;
 	
 	Texture texture;
 	Texture faceTexture;
@@ -296,12 +270,34 @@ public class MainWindow {
 		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			aPressed=true;
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			sPressed=true;
-		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
 			dPressed=true;
 		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_R)) {
+			rPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_L)) {
+			lPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_S)&&readySwimming) {
+			sPressed=true;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
+			wPressed=false;
+			aPressed=false;
+			dPressed=false;
+			rPressed=false;
+			lPressed=false;
+			readySwimming=false;
+			inSwimming=false;
+			sPressed=false;
+			swimmingFromLeft=true;
+			human_posn_x=1800;
+			human_posn_y=-600;
+			human_posn_z=3000;
+			human_rotate=0;
+		}
+		
 		
 		  
 		/** rest key is R*/
@@ -388,24 +384,7 @@ public class MainWindow {
 	 */
 	public void updateFPS() {
 		if (getTime() - lastFPS > 1000) {
-			int humanLoop=(int) delta;
-			int humanPhase=humanLoop%7;
-			if(humanPhase==0) {
-				Display.setTitle("Daily Life: John is waking up and stretching himslef");
-			}
-			if(humanPhase==1||humanPhase==2) {
-				Display.setTitle("Daily Life: John is walking to the table");
-			}
-			if(humanPhase==3) {
-				Display.setTitle("Daily Life: John is enjoying Cartoon");
-			}
-			if(humanPhase==4) {
-				Display.setTitle("Daily Life: John is ready for excerise");
-			}
-			if(humanPhase==5||humanPhase==6) {
-				Display.setTitle("Daily Life:John is running on the running machine");
-			}
-			//Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
+			Display.setTitle("FPS: " + fps+"---"+"---"+this.OrthoNumber);
 			fps = 0;
 			lastFPS += 1000;
 		}
@@ -559,8 +538,6 @@ public class MainWindow {
 		theta = (float) (delta * 2 * Math.PI);
 		float thetaDeg = delta * 360; 
 		
-//		posn_x = (float) Math.cos(theta-Math.PI/2); 
-//		posn_y  = (float) Math.sin(theta-Math.PI/2);
 
 		//决定是否画栅格图案
 		if(DRAWGRID) {
@@ -644,13 +621,12 @@ public class MainWindow {
 		}
 		GL11.glPopMatrix();
 		
-		//床
+		//引体向上
 		GL11.glPushMatrix();{
-			Bed bed=new Bed();
+			ChinUp chinUp=new ChinUp();
 			GL11.glTranslatef(3000, -1000, 6000);
 			GL11.glTranslatef(-800, 200,-750);
-			GL11.glScalef(2,4,3);
-			bed.drawBed(bedTexture);
+			chinUp.DrawChinUp();
 		}
 		GL11.glPopMatrix();
 		
@@ -708,224 +684,316 @@ public class MainWindow {
 		}
 		GL11.glPopMatrix();
 		
-		GL11.glPushMatrix();{
-			
-		}
-		GL11.glPopMatrix();
 		
-		/*
-		 * The following part is about Project 1:animated scene
-		 * */
 		GL11.glPushMatrix();{
-			Dog dog=new Dog();
-			float dog_step_x=0;
-			float dog_step_y=0;
-			float dog_step_z=0;
-			GL11.glTranslatef(this.dog_posn_x,this.dog_posn_y,this.dog_posn_z); 
-			int dogLoop=(int) delta;
-			int dogPhase=dogLoop%4;
-			if(dogPhase==0) {
-				this.dog_posn_x=0;
-				this.dog_posn_y=-900;
-				this.dog_posn_z=5000;
-				GL11.glPushMatrix();{
-					GL11.glScalef(180f, 180f, 180f);
-					float tempDeltaDegree=this.delta*360;
-					dog.drawDog(true, thetaDeg/130, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
+			{
+				Human human=new Human();
+				
+				GL11.glTranslatef(this.human_posn_x, this.human_posn_y, this.human_posn_z);
+				GL11.glScalef(220f, 220f, 220f);
+				GL11.glRotatef(human_rotate, 0, 1, 0);
+				
+				boolean[] xz_move=XZMove();
+				boolean x_move=xz_move[0];
+				boolean z_move=xz_move[1];
+				
+				float aimAngle=0;
+				float walking_angle=0;
+				if(human_rotate>=0) {
+					walking_angle=Math.abs(human_rotate)%360;
+				}else {
+					walking_angle=360-Math.abs(human_rotate)%360;
 				}
-				GL11.glPopMatrix();
-			}
-			if(dogPhase==1) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(0, 0, 0);
+				
+				if(walking_angle>5&&walking_angle<355) {
+					aimAngle=Math.round(walking_angle/10)*10;
+				}
+				if(rPressed&&runningEnable()) {
+					human_posn_x=-1376f;
+					human_posn_z=2266f;
+					human_rotate=90;
+					human.DrawRunningHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);			
+				}else if(lPressed&&chinUpEnable()) {
+					human_posn_x=2183;
+					human_posn_y=100;
+					human_posn_z=5293;
+					human_rotate=0;
+					human.DrawChinUpHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
+				}else if(sPressed){
+					 human_rotate=90;
+					 human_posn_y=-900f;
+					 inSwimming=true;
+					 if(swimmingFromLeft) {
+						 human_posn_x=human_posn_x+human_step; 
+						 GL11.glRotatef(180, 0, 1, 0);
+					 }else {
+						 human_posn_x=human_posn_x-human_step;
+					 }
+					 
+					 if(human_posn_x>2900) {
+						 swimmingFromLeft=false;
+					 }
+					 if(human_posn_x<1200) {
+						 swimmingFromLeft=true;
+					 }
+					 human.DrawSwimmingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
+				}else if(readySwimming&&!sPressed&&inSwimming) {
+					human_rotate=90;
+					human_posn_y=-500f;
+					human.DrawHuman(delta,false,faceTexture, bodyTexture, dogPelvisTexture);
+				}else if(readySwimming&&!sPressed&&!inSwimming) {
+					human_posn_x=701;
+					human_posn_y=30;
+					human_posn_z=1228;
 					GL11.glRotatef(180, 0, 1, 0);
-					GL11.glScalef(180f, 180f, 180f);
-					dog_step_x=1.3f;
-					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
-					this.dog_posn_x=this.dog_posn_x-dog_step_x;
-					this.dogPhase1++;
+					human.DrawHuman(delta, false, faceTexture, bodyTexture, dogPelvisTexture);
 				}
-				GL11.glPopMatrix();	
-			}
-			if(dogPhase==2) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(1200,0,0);
-					GL11.glScalef(180f, 180f, 180f);
-					if(this.dogPhase1!=0) {
-						System.out.println("DP1:"+this.dogPhase1);
-						if(this.dogPhase1!=1300) {
-							float dv=(float) (1.3*(this.dogPhase1-1330));
-							this.dog_posn_x=this.dog_posn_x+dv;
-						}
-						this.dogPhase1=0;
+				else {
+					human_posn_y=-600;
+					walkingHuman(human, x_move, z_move, aimAngle);
+					if(readySwimming) {
+						human_posn_x=1200;
 					}
-					GL11.glRotatef(-90, 0, 1, 0);
-					dog_step_z=-0.9f;
-					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
-					this.dog_posn_z=this.dog_posn_z-dog_step_z;
-					this.dogPhase2++;
 				}
-				GL11.glPopMatrix();
+				System.out.println(human_posn_x+"---"+human_posn_z+"-------"+human_rotate);
+				wPressed=false;
+				aPressed=false;
+				dPressed=false;
+				rPressed=false;
+				lPressed=false;
+				sPressed=false;
 			}
-			if(dogPhase==3) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(1200,0,0);
-					GL11.glScalef(180f, 180f, 180f);
-					if(this.dogPhase2!=0) {
-						System.out.println("DP2:"+this.dogPhase2);
-						this.dogPhase2=0;
-					}
-					GL11.glRotatef(0, 0, 1, 0);
-					dog_step_x=-1.3f;
-					dog.drawDog(false, thetaDeg/300, true, this.dogHeadTexture, this.dogBodyTexture, dogPelvisTexture);
-					this.dog_posn_x=this.dog_posn_x-dog_step_x;
-				}
-				GL11.glPopMatrix();
-				
-				
-			}
-			
 		}
 		GL11.glPopMatrix();
-		
-		GL11.glPushMatrix();{
-			Human human=new Human();
-			float human_step_x=0;
-			float human_step_y=0;
-			float human_step_z=0;
-			
-			GL11.glTranslatef(this.human_posn_x, this.human_posn_y, this.human_posn_z);
-			int humanLoop=(int) delta;
-			int humanPhase=humanLoop%7;
-			if(humanPhase==0) {
-				this.human_sit_distance=0;
-				this.human_posn_x=1500;
-				this.human_posn_y=-420;
-				this.human_posn_z=3800;
-				GL11.glPushMatrix();{
-					GL11.glRotatef(90, 1, 0, 0);
-					GL11.glScalef(250f, 250f, 250f);
-					float tempDelta=delta-7*(humanLoop/7);
-					human.DrawWakingHuman(tempDelta,false,faceTexture, bodyTexture, dogPelvisTexture);
-				}
-				GL11.glPopMatrix();
-			}
-			if(humanPhase==1) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(350, -200, -200);
-					GL11.glScalef(250f, 250f, 250f);
-					GL11.glRotatef(90, 0, 1, 0);
-					human_step_x=13.2f;
-					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-					this.human_posn_x=this.human_posn_x-human_step_x;
-					this.phase1++;
-				}
-				GL11.glPopMatrix();
-			}
-			if(humanPhase==2) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(110,-150,-200);
-					if(this.phase1!=0) {
-						System.out.println("HM1:"+this.phase1);
-						if(this.phase1!=470) {
-							float dv=(float) (13.2*(this.phase1-220));
-							this.human_posn_x=this.human_posn_x+dv;
-						}
-						this.phase1=0;
-					}
-					GL11.glScalef(250f, 250f, 250f);
-					GL11.glRotatef(180, 0, -1, 0);
-					human_step_z=5.8f;
-					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-					this.human_posn_z=this.human_posn_z+human_step_z;
-					this.phase2++;
-				}
-				GL11.glPopMatrix();
-			}
-			if(humanPhase==3) {
-				GL11.glPushMatrix();{
-					if(this.phase2!=0) {
-						System.out.println("HP2:"+this.phase2);
-						if(this.phase2!=1010) {
-							float dv=(float) (5.8*(this.phase2-310));
-							this.human_posn_z=this.human_posn_z-dv;
-						}
-						this.phase2=0;
-					}
-					GL11.glTranslatef(320,-200, -100);
-					GL11.glScalef(250f, 250f, 250f)  ;
-					float tempDelta=delta-3-7*(humanLoop/7);
-					human.DrawSittingHuman(tempDelta,false,faceTexture, bodyTexture, dogPelvisTexture,this.human_sit_distance);
-					this.human_sit_distance=this.human_sit_distance+this.human_sit_step;
-				}
-				GL11.glPopMatrix();
-			}
-			if(humanPhase==4) {
-				GL11.glPushMatrix();{
-					GL11.glTranslatef(300, -150, -100);
-					GL11.glScalef(220f, 220f, 220f);
-					human_step_z=14.2f;
-					human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-					this.human_posn_z=this.human_posn_z-human_step_z;
-					this.phase4++;
-				}
-				GL11.glPopMatrix();
-			}
-			if(humanPhase==5||humanPhase==6) {
-				GL11.glPushMatrix();{
-					if(this.phase4!=0) {
-						System.out.println(this.phase4);
-						if(this.phase4!=930) {
-							float dv=(float) (14.2*(this.phase4-230));
-							this.human_posn_z=this.human_posn_z+dv;
-						}
-						this.phase4=0;
-					}
-					GL11.glTranslatef(500, -150, 100);
-					GL11.glScalef(220f, 220f, 220f);
-					GL11.glRotatef(90, 0, 1, 0);
-					human.DrawHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-				}
-				GL11.glPopMatrix();
-			}
-			
-			GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 	
-		}
-		GL11.glPopMatrix();
-		
-//		GL11.glPushMatrix();{
-//			{
-//				if(wPressed) {
-//					System.out.println("W pressed");
-//					human_posn_z=human_posn_z+human_z_step;
-//				}
-//				if(aPressed) {
-//					System.out.println("A Pressed");
-//					human_posn_x=human_posn_x-human_x_step;
-//				}
-//				if(sPressed) {
-//					System.out.println("S Pressed");
-//					human_posn_z=human_posn_z-human_z_step;
-//				}
-//				if(dPressed) {
-//					System.out.println("D Pressed");
-//					human_posn_x=human_posn_x+human_x_step;
-//				}
-//				Human human=new Human();
-//				GL11.glTranslatef(this.human_posn_x, this.human_posn_y, this.human_posn_z);
-//				GL11.glScalef(220f, 220f, 220f);
-//				human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
-//				
-//				
-//				wPressed=false;
-//				aPressed=false;
-//				sPressed=false;
-//				dPressed=false;
-//			}
-//		}
-//		GL11.glPopMatrix();
 	}
-		  
+	
+	
+	
+	private boolean[] XZMove() {
+		boolean x_move=true;
+		boolean z_move=true;
+		
+		//对游泳池的位置的监测
+		if(human_posn_x>261&&human_posn_z<2542) {
+			if(human_posn_x>261) {
+				x_move=false;
+			}
+			if(human_posn_z<2542) {
+				z_move=false;
+			}
+		}
+		
+		//对桌子的位置的检测
+		if(human_posn_x<-1673&&human_posn_z>4272) {
+			if(human_posn_x<-1673) {
+				x_move=false;
+			}
+			if(human_posn_z>4272) {
+				z_move=false;
+			}
+		}
+		
+		//对椅子位置的检测
+		if(human_posn_x<-771&&human_posn_x>-1123&&human_posn_z>5086&&human_posn_z<5761) {
+			if(human_posn_x<-771&&human_posn_x>-1123) {
+				x_move=false;
+			}
+			if(human_posn_z>5086&&human_posn_z<5761) {
+				z_move=false;
+			}
+		}
+		
+		
+		boolean[] booleans= {x_move,z_move};
+		return booleans;
+	}
+		
+	private boolean XZMoveTest(float human_posn_x,float human_posn_z) {
+		boolean x_move=true;
+		boolean z_move=true;
+		
+		
+		//游泳池的数据监测
+		if(human_posn_x>261&&human_posn_z<2542) {
+			if(human_posn_x>261) {
+				x_move=false;
+			}
+			if(human_posn_z<2542) {
+				z_move=false;
+			}
+		}
+		
+		//对桌子的位置的检测
+		if(human_posn_x<-1673&&human_posn_z>4272) {
+			if(human_posn_x<-1673) {
+				x_move=false;
+			}
+			if(human_posn_z>4272) {
+				z_move=false;
+			}
+		}
+		
+		
+		//对椅子位置的检测
+		if(human_posn_x<-771&&human_posn_x>-1123&&human_posn_z>5086&&human_posn_z<5761) {
+			if(human_posn_x<-771&&human_posn_x>-1123) {
+				x_move=false;
+			}
+			if(human_posn_z>5086&&human_posn_z<5761) {
+				z_move=false;
+			}
+		}
+
+		boolean tryBoolean= x_move||z_move;
+		return tryBoolean;
+	}
+	
+	private boolean runningEnable() {
+		boolean running=false;
+		if(human_posn_x>-1890&&human_posn_x<-740&&human_posn_z>1793&&human_posn_z<2623) {
+			running=true;
+		}
+		return running;
+	}
+	
+	private boolean chinUpEnable() {
+		boolean chinUp=false;
+		if(human_posn_x>1832&&human_posn_x<2499&&human_posn_z>4955&&human_posn_z<5459) {
+			chinUp=true;
+		}
+		return chinUp;
+	}
+	
+	private void walkingHuman(Human human,boolean x_move,boolean z_move,float aimAngle) {
+		if(wPressed) {
+			float human_step_x=(float) (Math.abs(human_step*Math.sin(aimAngle)));
+			float human_step_z=(float) (Math.abs(human_step*Math.cos(aimAngle)));
+			if(human_posn_x>150&&human_posn_x<261&&human_posn_z>616&&human_posn_z<1661&&human_step_x>0) {
+				human_posn_x=701;
+				human_posn_y=30;
+				human_posn_z=1228;
+				readySwimming=true;
+				human_rotate=90;
+				return;
+			}
+			if(aimAngle<90) {
+				float origin_x=human_posn_x-human_step_x;
+				float origin_z=human_posn_z-human_step_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x-human_step_x;
+					human_posn_z=human_posn_z-human_step_z;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x-human_step_x;
+					}
+					if(z_move) {
+						human_posn_z=human_posn_z-human_step_z;
+					}
+				}
+			}else if(aimAngle<180&&aimAngle>90) {
+				float origin_x=human_posn_x-human_step_x;
+				float origin_z=human_posn_z+human_step_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x-human_step_x;
+					human_posn_z=human_posn_z+human_step_z;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x-human_step_x;
+					}
+					if(z_move) {
+						human_posn_z=human_posn_z+human_step_z;
+					}
+				}
+			}
+			else if(aimAngle>180&&aimAngle<270) {
+				float origin_x=human_posn_x+human_step_x;
+				float origin_z=human_posn_z+human_step_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x+human_step_x;
+					human_posn_z=human_posn_z+human_step_z;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x+human_step_x;
+					}
+					if(z_move) {
+						human_posn_z=human_posn_z+human_step_z;
+					}
+				}
+			}
+			else if(aimAngle>270&&aimAngle<360) {
+				float origin_x=human_posn_x+human_step_x;
+				float origin_z=human_posn_z-human_step_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x+human_step_x;
+					human_posn_z=human_posn_z-human_step_z;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x+human_step_x;
+					}
+					if(z_move) {
+						human_posn_z=human_posn_z-human_step_z;
+					}
+				}
+			}
+			else if (aimAngle==90) {
+				float origin_x=human_posn_x-human_step_x;
+				float origin_z=human_posn_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x-human_step_x;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x-human_step_x;
+					}
+					if(z_move) {
+					}
+				}
+			}
+			else if (aimAngle==180) {
+				float origin_x=human_posn_x;
+				float origin_z=human_posn_z+human_step_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_z=human_posn_z+human_step_z;
+				}else {
+					if(x_move) {
+					}
+					if(z_move) {
+						human_posn_z=human_posn_z+human_step_z;
+					}
+				}
+			}
+			else if(aimAngle==270) {
+				float origin_x=human_posn_x+human_step_x;
+				float origin_z=human_posn_z;
+				boolean  tryBoolean=XZMoveTest(origin_x, origin_z);
+				if(tryBoolean) {
+					human_posn_x=human_posn_x+human_step_x;
+				}else {
+					if(x_move) {
+						human_posn_x=human_posn_x+human_step_x;
+					}
+					if(z_move) {
+					}
+				}
+			}
+			human.DrawRotateWalkingHuman(delta,true,faceTexture, bodyTexture, dogPelvisTexture);
+		}else {
+			System.out.println("AIMING:"+aimAngle);
+			if(aPressed) {
+				human_rotate=human_rotate-human_rotate_step;
+			}
+			if(dPressed) {
+				human_rotate=human_rotate+human_rotate_step;
+			}
+			human.DrawHuman(delta,false,faceTexture, bodyTexture, dogPelvisTexture);
+		}
+	}
+	
 	public static void main(String[] argv) {
 		MainWindow hello = new MainWindow();
 		hello.start();
@@ -967,5 +1035,7 @@ public class MainWindow {
 	  this.machineBottom=TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream( "res/machineBottom.png"));
 	}
 
+	
+	
 	
 }

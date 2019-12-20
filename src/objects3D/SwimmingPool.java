@@ -95,7 +95,7 @@ public class SwimmingPool {
 			GL11.glRotatef(90, 0, 1, 0);
 			GL11.glTranslatef(0, 0.4f*height, -length-100);
 			GL11.glColor3f(white[0], white[1], white[2]);
-			GL11.glScalef(0.5f*width,0.20f*height , 200f);
+			GL11.glScalef(1.05f*width,0.20f*height , 200f);
 //			cube.DrawCube();
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL11.GL_CLAMP);
 			Color.white.bind();
@@ -128,7 +128,7 @@ public class SwimmingPool {
 			GL11.glRotatef(90, 0, 1, 0);
 			GL11.glTranslatef(0, 1.31f*height, -length+100);
 			GL11.glColor3f(white[0], white[1], white[2]);
-			GL11.glScalef(0.5f*width,0.30f*height , 200f);
+			GL11.glScalef(0.5f*width,0.2f*height , 200f);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL11.GL_CLAMP);
 			Color.white.bind();
 			wallTexture.bind();
